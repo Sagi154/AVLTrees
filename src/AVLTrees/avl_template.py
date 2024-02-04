@@ -1,15 +1,15 @@
 #username - complete info
-#id1      - complete info 
-#name1    - complete info 
+#id1      - complete info
+#name1    - complete info
 #id2      - complete info
-#name2    - complete info  
+#name2    - complete info
 
 
 
 """A class represnting a node in an AVL tree"""
 
 class AVLNode(object):
-	"""Constructor, you are allowed to add more fields. 
+	"""Constructor, you are allowed to add more fields.
 
 	@type key: int or None
 	@type value: any
@@ -22,7 +22,15 @@ class AVLNode(object):
 		self.right = None
 		self.parent = None
 		self.height = -1
-		
+		self.size = None
+		"""
+		The size of the sub tree this node is the root of.
+		"""
+		self.bf = None
+		"""
+		The balance factor of this node.
+		"""
+
 
 	"""returns the left child
 	@rtype: AVLNode
@@ -152,11 +160,15 @@ class AVLTree(object):
 	Constructor, you are allowed to add more fields.  
 
 	"""
-	def __init__(self):
-		self.root = None
+	def __init__(self, root: AVLNode):
+		self.root = root
 		# add your fields here
 
+	def rotate_right(self):
+		pass
 
+	def rotate_left(self):
+		pass
 
 	"""searches for a AVLNode in the dictionary corresponding to the key
 
@@ -209,9 +221,9 @@ class AVLTree(object):
 	@returns: the number of items in dictionary 
 	"""
 	def size(self):
-		return -1	
+		return -1
 
-	
+
 	"""splits the dictionary at the i'th index
 
 	@type node: AVLNode
@@ -225,7 +237,7 @@ class AVLTree(object):
 	def split(self, node):
 		return None
 
-	
+
 	"""joins self with key and another AVLTree
 
 	@type tree2: AVLTree 
@@ -248,4 +260,4 @@ class AVLTree(object):
 	@returns: the root, None if the dictionary is empty
 	"""
 	def get_root(self):
-		return None
+		return self.root
