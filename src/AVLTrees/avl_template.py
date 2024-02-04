@@ -22,7 +22,7 @@ class AVLNode(object):
 		self.right = None
 		self.parent = None
 		self.height = -1
-		self.size = None
+		self.size = 1
 		"""
 		The size of the sub tree this node is the root of.
 		"""
@@ -37,7 +37,9 @@ class AVLNode(object):
 	@returns: the left child of self, None if there is no left child (if self is virtual)
 	"""
 	def get_left(self):
-		return None
+		if (self.left is None) or (self.left.key is None):
+			return None
+		return self.left
 
 
 
@@ -47,7 +49,9 @@ class AVLNode(object):
 	@returns: the right child of self, None if there is no right child (if self is virtual)
 	"""
 	def get_right(self):
-		return None
+		if (self.right is None) or (self.right.key is None):
+			return None
+		return self.right
 
 
 	"""returns the parent 
@@ -56,7 +60,7 @@ class AVLNode(object):
 	@returns: the parent of self, None if there is no parent
 	"""
 	def get_parent(self):
-		return None
+		return self.parent
 
 
 	"""returns the key
@@ -65,7 +69,7 @@ class AVLNode(object):
 	@returns: the key of self, None if the node is virtual
 	"""
 	def get_key(self):
-		return None
+		return self.key
 
 
 	"""returns the value
@@ -74,7 +78,7 @@ class AVLNode(object):
 	@returns: the value of self, None if the node is virtual
 	"""
 	def get_value(self):
-		return None
+		return self.value
 
 
 	"""returns the height
@@ -83,7 +87,7 @@ class AVLNode(object):
 	@returns: the height of self, -1 if the node is virtual
 	"""
 	def get_height(self):
-		return -1
+		return self.height
 
 
 	"""sets left child
@@ -92,7 +96,7 @@ class AVLNode(object):
 	@param node: a node
 	"""
 	def set_left(self, node):
-		return None
+		self.left = node
 
 
 	"""sets right child
@@ -101,7 +105,7 @@ class AVLNode(object):
 	@param node: a node
 	"""
 	def set_right(self, node):
-		return None
+		self.right = node
 
 
 	"""sets parent
@@ -110,7 +114,7 @@ class AVLNode(object):
 	@param node: a node
 	"""
 	def set_parent(self, node):
-		return None
+		self.parent = node
 
 
 	"""sets key
@@ -119,7 +123,7 @@ class AVLNode(object):
 	@param key: key
 	"""
 	def set_key(self, key):
-		return None
+		self.key = key
 
 
 	"""sets value
@@ -128,7 +132,7 @@ class AVLNode(object):
 	@param value: data
 	"""
 	def set_value(self, value):
-		return None
+		self.value = value
 
 
 	"""sets the height of the node
@@ -137,7 +141,7 @@ class AVLNode(object):
 	@param h: the height
 	"""
 	def set_height(self, h):
-		return None
+		self.height = h
 
 
 	"""returns whether self is not a virtual node 
@@ -146,9 +150,44 @@ class AVLNode(object):
 	@returns: False if self is a virtual node, True otherwise.
 	"""
 	def is_real_node(self):
-		return False
+		return self.key!=None
 
 
+	"""sets the size of the node
+
+	@type s: int
+	@param s: the size
+	"""
+	def set_size(self, s):
+		self.size = s
+
+
+	"""returns the size of the node's subtree
+
+	@rtype: int 
+	@returns: the size of self's subtree
+	"""
+	def get_size(self):
+		return self.size
+
+
+	"""sets the bf of the node
+
+	@rtype: int
+	*********************************@returns: the bf of the node
+	"""
+
+	def set_bf(self):
+		self.bf =  self.right.get_height() - self.left.get_height()
+
+	"""returns the size of the node's bf
+
+	@rtype: int
+	@returns: the bf of the node
+	"""
+
+	def get_bf(self):
+		return self.bf
 
 """
 A class implementing the ADT Dictionary, using an AVL tree.
