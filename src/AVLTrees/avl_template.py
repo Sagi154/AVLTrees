@@ -4,7 +4,7 @@
 #id2      - complete info
 #name2    - complete info
 
-
+import math
 
 """A class represnting a node in an AVL tree"""
 
@@ -210,10 +210,10 @@ class AVLTree(object):
 		node.set_parent(parent.get_parent())
 		parent.set_parent(node)
 		node.set_right(parent)
-		if node.parent is not None:
-			if node.parent.get_value > node.get_value:
-				node.parent.set_left(node)
-			node.parent.set_right(node)
+		self.maintain(parent)
+		self.maintain(node)
+		self.set_node_parent(node)
+
 
 
 	"""rotate the subtree of parent to the left"""
@@ -222,11 +222,30 @@ class AVLTree(object):
 		node.set_parent(parent.get_parent())
 		parent.set_parent(node)
 		node.set_left(parent)
+		self.maintain(parent)
+		self.maintain(node)
+		self.set_node_parent(node)
+
+	def set_node_parent(self,node):
 		if node.parent is not None:
 			if node.parent.get_value > node.get_value:
 				node.parent.set_left(node)
 			node.parent.set_right(node)
 
+	def maintain(self,node):
+		node.set_height(max(node.get_left.get_height(), node.get_right.get_height())+1)
+		node.set_size(node.get_left.get_size() + node.get_right.get_size() + 1)
+		node.set_bf()
+
+
+	def balance(self, node):
+		node.set_bf()
+		if node.get_bf() > 1:
+			node.rotate_left(node, node.get_left())
+		elif node.get_bf() < -1:
+			node.rotate_right(node, node.get_left())
+		else:
+			self.maintain(node)
 
 	"""searches for a AVLNode in the dictionary corresponding to the key
 
