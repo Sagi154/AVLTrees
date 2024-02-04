@@ -178,7 +178,7 @@ class AVLNode(object):
 	"""
 
 	def set_bf(self):
-		self.bf =  self.right.get_height() - self.left.get_height()
+		self.bf = self.right.get_height() - self.left.get_height()
 
 	"""returns the size of the node's bf
 
@@ -203,11 +203,30 @@ class AVLTree(object):
 		self.root = root
 		# add your fields here
 
-	def rotate_right(self):
-		pass
 
-	def rotate_left(self):
-		pass
+	"""rotate the subtree of parent to the right"""
+	def rotate_right(self, parent, node):
+		parent.set_left(node.get_right)
+		node.set_parent(parent.get_parent())
+		parent.set_parent(node)
+		node.set_right(parent)
+		if node.parent is not None:
+			if node.parent.get_value > node.get_value:
+				node.parent.set_left(node)
+			node.parent.set_right(node)
+
+
+	"""rotate the subtree of parent to the left"""
+	def rotate_left(self, parent, node):
+		parent.set_right(node.get_left)
+		node.set_parent(parent.get_parent())
+		parent.set_parent(node)
+		node.set_left(parent)
+		if node.parent is not None:
+			if node.parent.get_value > node.get_value:
+				node.parent.set_left(node)
+			node.parent.set_right(node)
+
 
 	"""searches for a AVLNode in the dictionary corresponding to the key
 
