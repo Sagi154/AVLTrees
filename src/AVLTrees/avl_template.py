@@ -135,6 +135,7 @@ class AVLNode(object):
 		"""
 		return self.key is not None
 
+
 	"""
 			returns the height.
 		:return: the height of self, -1 if the node is virtual.
@@ -183,7 +184,14 @@ class AVLTree(object):
 
 	"""rotate the subtree of parent to the right"""
 	def rotate_right(self, parent, node):
+		"""
+		rotate the subtree of parent to the right
+		@param parent:
+		@param node:
+		"""
+
 		parent.set_left(node.get_right)
+		node.get_right().set_parent(parent)
 		node.set_parent(parent.get_parent())
 		parent.set_parent(node)
 		node.set_right(parent)
@@ -195,7 +203,14 @@ class AVLTree(object):
 
 	"""rotate the subtree of parent to the left"""
 	def rotate_left(self, parent, node):
+		"""
+		rotate the subtree of parent to the left
+		@param parent:
+		@param node:
+		"""
+
 		parent.set_right(node.get_left)
+		node.get_left().set_parent(parent)
 		node.set_parent(parent.get_parent())
 		parent.set_parent(node)
 		node.set_left(parent)
@@ -204,25 +219,49 @@ class AVLTree(object):
 		self.set_node_parent(node)
 
 	def set_node_parent(self,node):
+		"""
+		set the node as a son of the parent after a rotation
+		@param node:
+		"""
 		if node.parent is not None:
-			if node.parent.get_value > node.get_value:
+			if node.parent.get_value() > node.get_value():
 				node.parent.set_left(node)
 			node.parent.set_right(node)
 
 	def maintain(self,node):
+		"""
+		calculate and update the height, size and bf of the node
+		@param node:
+		"""
 		node.set_height(max(node.get_left.get_height(), node.get_right.get_height())+1)
 		node.set_size(node.get_left.get_size() + node.get_right.get_size() + 1)
 		node.set_bf()
 
 
 	def balance(self, node):
+		"""
+		check if the subtree is balanced and if not rotate him
+		@param node:
+		@return: the number of rotations needed to balance the tree
+		"""
 		node.set_bf()
-		if node.get_bf() > 1:
-			node.rotate_left(node, node.get_left())
-		elif node.get_bf() < -1:
+		counter = 0
+		if node.get_bf() == -2:
+			counter += 1
+			if node.get_right().get_bf() > 0:
+				counter += 1
+				node.get_right().rotate_right(node.get_right(), node.get_right().get_left())
+			node.rotate_left(node, node.get_right())
+		elif node.get_bf() == 2:
+			counter += 1
+			if node.left().get_bf() < 0:
+				counter += 1
+				node.get_left().rotate_left(node.get_left(), node.get_left().get_right())
 			node.rotate_right(node, node.get_left())
 		else:
 			self.maintain(node)
+		return counter
+
 
 	def search(self, key: int) -> 'AVLNode':
 		"""
@@ -253,7 +292,41 @@ class AVLTree(object):
 	@returns: the number of rebalancing operation due to AVL rebalancing
 	"""
 	def insert(self, key, val):
-		return -1
+		node = AVLNode(key, val)
+		pointer = self.root
+		num_of_rotates = 0
+
+		while pointer.is_real_node():
+			tmp = pointer
+			if pointer.get_value() > val:
+				pointer = pointer.get_right()
+			else:
+				pointer = pointer.get_left()
+
+		pointer = tmp
+		if pointer.get_value() > val:
+			pointer.set_right(node)
+		else:
+			pointer.set_left(node)
+		node.set_parent(pointer)
+
+		balanced = True
+
+		while pointer.is_real_node():
+			pointer_height = pointer.get_height()
+			self.maintain(pointer)
+			if balanced:
+				if abs(pointer.get_bf()) < 2:
+					if pointer_height == pointer.get_height():
+						balanced = False
+					else:
+						pass
+				else:
+					num_of_rotates = self.balance(pointer)
+
+			pointer = pointer.get_parent()
+
+
 
 
 	"""deletes node from the dictionary
