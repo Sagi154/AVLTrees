@@ -8,7 +8,7 @@ import math
 
 
 class AVLNode(object):
-	"""A class represnting a node in an AVL tree"""
+	"""A class representing a node in an AVL tree"""
 	def __init__(self):
 		"""
 		A constructor used to create virtual nodes.
@@ -224,14 +224,21 @@ class AVLTree(object):
 		else:
 			self.maintain(node)
 
-	"""searches for a AVLNode in the dictionary corresponding to the key
-
-	@type key: int
-	@param key: a key to be searched
-	@rtype: AVLNode
-	@returns: the AVLNode corresponding to key or None if key is not found.
-	"""
-	def search(self, key):
+	def search(self, key: int) -> 'AVLNode':
+		"""
+		searches for a AVLNode in the dictionary corresponding to the key.
+		:Complexity: O(log(n)) as seen in class.
+		:param key: a key to be searched.
+		:return: the AVLNode corresponding to key or None if key is not found.
+		"""
+		temp_root = self
+		while temp_root is not None:
+			if key == temp_root.key:
+				return temp_root
+			elif key < temp_root.key:
+				temp_root = temp_root.left
+			else:
+				temp_root = temp_root.right
 		return None
 
 
@@ -268,14 +275,12 @@ class AVLTree(object):
 	def avl_to_array(self):
 		return None
 
-
-	"""returns the number of items in dictionary 
-
-	@rtype: int
-	@returns: the number of items in dictionary 
-	"""
-	def size(self):
-		return -1
+	def size(self) -> int:
+		"""
+		returns the number of items in dictionary
+		:return: the number of items in dictionary
+		"""
+		return self.root.size
 
 
 	"""splits the dictionary at the i'th index
@@ -307,11 +312,9 @@ class AVLTree(object):
 	def join(self, tree2, key, val):
 		return None
 
-
-	"""returns the root of the tree representing the dictionary
-
-	@rtype: AVLNode
-	@returns: the root, None if the dictionary is empty
-	"""
-	def get_root(self):
+	def get_root(self) -> AVLNode:
+		"""
+		returns the root of the tree representing the dictionary.
+		:return: the root, None if the dictionary is empty.
+		"""
 		return self.root
