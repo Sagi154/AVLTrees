@@ -6,22 +6,35 @@
 
 import math
 
-"""A class represnting a node in an AVL tree"""
 
 class AVLNode(object):
-	"""Constructor, you are allowed to add more fields.
-
-	@type key: int or None
-	@type value: any
-	@param value: data of your node
-	"""
-	def __init__(self, key, value):
-		self.key = key
-		self.value = value
+	"""A class represnting a node in an AVL tree"""
+	def __init__(self):
+		"""
+		A constructor used to create virtual nodes.
+		"""
+		self.key = None
+		self.value = None
 		self.left = None
 		self.right = None
 		self.parent = None
 		self.height = -1
+		self.size = 0
+		self.bf = 0
+
+	def __init__(self, key: int | None, value):
+		"""
+		Constructor, you are allowed to add more fields.
+		:param key: key or your node.
+		:param value: data of your node.
+		"""
+		self.key = key
+		self.value = value
+		self.left = AVLNode()
+		self.right = AVLNode()
+		self.parent = None
+		# TODO : figure out how height attribute maintenance should work
+		self.height = 0
 		self.size = 1
 		"""
 		The size of the sub tree this node is the root of.
@@ -31,175 +44,139 @@ class AVLNode(object):
 		The balance factor of this node.
 		"""
 
-
-	"""returns the left child
-	@rtype: AVLNode
-	@returns: the left child of self, None if there is no left child (if self is virtual)
-	"""
-	def get_left(self):
-		if (self.left is None) or (self.left.key is None):
-			return None
+	def get_left(self) -> 'AVLNode' | None:
+		"""
+		returns the left child.
+		:return: the left child of self, None if there is no left child (if self is virtual)
+		"""
 		return self.left
 
-
-
-	"""returns the right child
-
-	@rtype: AVLNode
-	@returns: the right child of self, None if there is no right child (if self is virtual)
-	"""
-	def get_right(self):
-		if (self.right is None) or (self.right.key is None):
-			return None
+	def get_right(self) -> 'AVLNode' | None:
+		"""
+		returns the right child.
+		:return: the right child of self, None if there is no right child (if self is virtual)
+		"""
 		return self.right
 
-
-	"""returns the parent 
-
-	@rtype: AVLNode
-	@returns: the parent of self, None if there is no parent
-	"""
-	def get_parent(self):
+	def get_parent(self) -> 'AVLNode' | None:
+		"""
+		returns the parent.
+		:return: the parent of self, None if there is no parent.
+		"""
 		return self.parent
 
-
-	"""returns the key
-
-	@rtype: int or None
-	@returns: the key of self, None if the node is virtual
-	"""
-	def get_key(self):
+	def get_key(self) -> int | None:
+		"""
+		returns the key.
+		:return: the key of self, None if the node is virtual.
+		"""
 		return self.key
 
-
-	"""returns the value
-
-	@rtype: any
-	@returns: the value of self, None if the node is virtual
-	"""
 	def get_value(self):
+		"""
+		returns the value.
+		:return: the value of self, None if the node is virtual.
+		"""
 		return self.value
 
-
-	"""returns the height
-
-	@rtype: int
-	@returns: the height of self, -1 if the node is virtual
-	"""
-	def get_height(self):
+	def get_height(self) -> int:
+		"""
+		returns the height.
+		:return: the height of self, -1 if the node is virtual.
+		"""
 		return self.height
 
-
-	"""sets left child
-
-	@type node: AVLNode
-	@param node: a node
-	"""
-	def set_left(self, node):
+	def set_left(self, node: 'AVLNode'):
+		"""
+		sets left child.
+		:param node: a node.
+		"""
 		self.left = node
 
-
-	"""sets right child
-
-	@type node: AVLNode
-	@param node: a node
-	"""
-	def set_right(self, node):
+	def set_right(self, node: 'AVLNode'):
+		"""
+		sets right child.
+		:param node: a node.
+		"""
 		self.right = node
 
-
-	"""sets parent
-
-	@type node: AVLNode
-	@param node: a node
-	"""
-	def set_parent(self, node):
+	def set_parent(self, node: 'AVLNode'):
+		"""
+		sets parent.
+		:param node: a node.
+		"""
 		self.parent = node
 
-
-	"""sets key
-
-	@type key: int or None
-	@param key: key
-	"""
-	def set_key(self, key):
+	def set_key(self, key: int | None):
+		"""
+		Sets key.
+		:param key: key
+		"""
 		self.key = key
 
-
-	"""sets value
-
-	@type value: any
-	@param value: data
-	"""
 	def set_value(self, value):
+		"""
+		Sets value.
+		:param value: data
+		"""
 		self.value = value
 
-
-	"""sets the height of the node
-
-	@type h: int
-	@param h: the height
-	"""
-	def set_height(self, h):
+	def set_height(self, h: int):
+		"""
+		sets the height of the node.
+		:param h: the height of the node.
+		"""
 		self.height = h
 
+	def is_real_node(self) -> bool:
+		"""
+		returns whether self is not a virtual node
+		:return: False if self is a virtual node, True otherwise.
+		"""
+		return self.key is not None
 
-	"""returns whether self is not a virtual node 
-
-	@rtype: bool
-	@returns: False if self is a virtual node, True otherwise.
 	"""
-	def is_real_node(self):
-		return self.key!=None
-
-
-	"""sets the size of the node
-
-	@type s: int
-	@param s: the size
+			returns the height.
+		:return: the height of self, -1 if the node is virtual.
 	"""
-	def set_size(self, s):
-		self.size = s
-
-
-	"""returns the size of the node's subtree
-
-	@rtype: int 
-	@returns: the size of self's subtree
-	"""
-	def get_size(self):
+	def get_size(self) -> int:
+		"""
+		returns the size of the node's subtree.
+		:return: the size of self's subtree, 0 if the node is virtual.
+		"""
 		return self.size
 
+	def set_size(self, size: int):
+		"""
+		Sets the size of the node.
+		:param size: the size of this node.
+		"""
+		self.size = size
 
-	"""sets the bf of the node
-
-	@rtype: int
-	*********************************@returns: the bf of the node
-	"""
-
-	def set_bf(self):
-		self.bf = self.right.get_height() - self.left.get_height()
-
-	"""returns the size of the node's bf
-
-	@rtype: int
-	@returns: the bf of the node
-	"""
-
-	def get_bf(self):
+	def get_bf(self) -> int:
+		"""
+		returns the balance factor.
+		:return: the balance factor of self, 0 if the node is virtual.
+		"""
 		return self.bf
 
-"""
-A class implementing the ADT Dictionary, using an AVL tree.
-"""
+	def set_bf(self):
+		"""
+		sets the balance factor of the node.
+		"""
+		self.bf = self.left.get_height() - self.right.get_height()
+
 
 class AVLTree(object):
-
 	"""
-	Constructor, you are allowed to add more fields.  
-
+	A class implementing the ADT Dictionary, using an AVL tree.
 	"""
+
 	def __init__(self, root: AVLNode):
+		"""
+		Constructor, you are allowed to add more fields.
+
+		"""
 		self.root = root
 		# add your fields here
 
