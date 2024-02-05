@@ -237,7 +237,6 @@ class AVLTree(object):
 		node.set_size(node.get_left.get_size() + node.get_right.get_size() + 1)
 		node.set_bf()
 
-	# blabla
 
 	def balance(self, node):
 		node.set_bf()
