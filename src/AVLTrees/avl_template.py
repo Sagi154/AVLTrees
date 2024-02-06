@@ -300,6 +300,16 @@ class AVLTree(object):
 		return num_of_rotates
 
 	def check_balance_and_maintain_upwards(self, pointer):
+		"""
+		Going upwards from the parent of the inserted/ deleted node to the root and checking if each node's subtree in
+		the route is balanced. If not it balance it and update the balance factory, height and size. If the subtree is
+		balanced it only update the balance factory, height and size.
+		The method also calculate the number of rotations needed to balance all the subtrees in the route and return
+		and return it.
+		@param pointer: The parent of the inserted/ deleted node
+		@return: the number of rotations needed to balance all the subtrees in the route from the inserted/ deleted node
+		to the root
+		"""
 		not_balanced = True
 		num_of_rotates = 0
 
@@ -319,6 +329,11 @@ class AVLTree(object):
 		return num_of_rotates
 
 	def node_parent_position(self, new_node_val):
+		"""
+		searching for the node who will be the parent of the node that will be inserted
+		@param new_node_val: the value of the node that will be inserted
+		@return: the position of the node who will be the parent of the node that will be inserted
+		"""
 		pointer = self.root
 
 		while pointer.is_real_node():
@@ -375,7 +390,7 @@ class AVLTree(object):
 			node_parent.set_left(node)
 		node.set_parent(node_parent)
 
-		return self.check_balance_and_maintain_upwards(node)
+		return self.check_balance_and_maintain_upwards(node_parent)
 
 	"""deletes node from the dictionary
 
