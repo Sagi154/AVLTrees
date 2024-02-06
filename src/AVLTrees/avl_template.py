@@ -282,22 +282,54 @@ class AVLTree(object):
 		@return: the number of rotations needed to balance the tree
 		"""
 		node.set_balance_factor()
-		counter = 0
+		num_of_rotates = 0
 		if node.get_balance_factor() == -2:
-			counter += 1
+			num_of_rotates += 1
 			if node.get_right().get_balance_factor() > 0:
-				counter += 1
+				num_of_rotates += 1
 				node.get_right().rotate_right(node.get_right(), node.get_right().get_left())
 			node.rotate_left(node, node.get_right())
 		elif node.get_balance_factor() == 2:
-			counter += 1
+			num_of_rotates += 1
 			if node.left().get_balance_factor() < 0:
-				counter += 1
+				num_of_rotates += 1
 				node.get_left().rotate_left(node.get_left(), node.get_left().get_right())
 			node.rotate_right(node, node.get_left())
 		else:
 			self.maintain_attributes(node)
-		return counter
+		return num_of_rotates
+
+	def check_balance_and_maintain_upwards(self, pointer):
+		not_balanced = True
+		num_of_rotates = 0
+
+		while pointer is not None:
+			pointer_height = pointer.get_height()
+			self.maintain_attributes(pointer)
+			if not_balanced:
+				if abs(pointer.get_balance_factor()) < 2:
+					if pointer_height == pointer.get_height():
+						not_balanced = False
+					else:
+						pass
+				else:
+					num_of_rotates += self.balance(pointer)
+
+			pointer = pointer.get_parent()
+		return num_of_rotates
+
+	def node_parent_position(self, new_node_val):
+		pointer = self.root
+
+		while pointer.is_real_node():
+			tmp = pointer
+			if pointer.get_value() > new_node_val:
+				pointer = pointer.get_right()
+			else:
+				pointer = pointer.get_left()
+
+		pointer = tmp
+		return pointer
 
 	def search(self, key: int) -> AVLNode | None:
 		"""
@@ -329,38 +361,21 @@ class AVLTree(object):
 
 	def insert(self, key, val):
 		node = AVLNode(key, val)
-		pointer = self.root
-		num_of_rotates = 0
 
-		while pointer.is_real_node():
-			tmp = pointer
-			if pointer.get_value() > val:
-				pointer = pointer.get_right()
-			else:
-				pointer = pointer.get_left()
+		if self.get_root() is None:
+			self.root = node
+			self.maintain_attributes(node)
+			return 0
 
-		pointer = tmp
-		if pointer.get_value() > val:
-			pointer.set_right(node)
+		node_parent = self.node_parent_position(val)
+
+		if node_parent.get_value() > val:
+			node_parent.set_right(node)
 		else:
-			pointer.set_left(node)
-		node.set_parent(pointer)
+			node_parent.set_left(node)
+		node.set_parent(node_parent)
 
-		balanced = True
-
-		while pointer.is_real_node():
-			pointer_height = pointer.get_height()
-			self.maintain_attributes(pointer)
-			if balanced:
-				if abs(pointer.get_balance_factor()) < 2:
-					if pointer_height == pointer.get_height():
-						balanced = False
-					else:
-						pass
-				else:
-					num_of_rotates = self.balance(pointer)
-
-			pointer = pointer.get_parent()
+		return self.check_balance_and_maintain_upwards(node)
 
 	"""deletes node from the dictionary
 
