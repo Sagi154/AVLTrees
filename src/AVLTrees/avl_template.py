@@ -193,6 +193,21 @@ class AVLTree(object):
 
 	# add your fields here
 
+	# TODO: move to AVLNode
+	def min(self, node: AVLNode) -> AVLNode:
+		while node.get_left().is_real_node():
+			node = node.get_left()
+		return node
+
+	def successor(self, node: AVLNode) -> AVLNode:
+		if node.get_right().is_real_node():
+			return self.min(node.get_right())
+		temp_parent = node.get_parent()
+		while temp_parent is not None and node == temp_parent.get_right():
+			node = temp_parent
+			temp_parent = node.get_parent()
+		return temp_parent
+
 	def set_top_parent_post_rotation(self, post_rotate_new_top: AVLNode):
 		"""
 		Figures out whether the post rotation new top node is left or right child of previous top parent and sets it.
@@ -407,22 +422,63 @@ class AVLTree(object):
 
 		return self.check_balance_and_maintain_upwards(node_parent)
 
-	"""deletes node from the dictionary
+	def delete(self, node: AVLNode) -> int:
+		"""
+		deletes node from the dictionary.
+		:param node: A real pointer to a node in self.
+		:return: the number of rebalancing operation due to AVL rebalancing
+		"""
+		# First we perform a delete operation as in a BST.
+		node_parent = self.bst_delete(node)
+		return self.check_balance_and_maintain_upwards(node_parent)
 
-	@type node: AVLNode
-	@pre: node is a real pointer to a node in self
-	@rtype: int
-	@returns: the number of rebalancing operation due to AVL rebalancing
-	"""
+	@staticmethod
+	def bst_delete_has_one_child(node: AVLNode):
+		"""
+		? Maybe move to AVLNode ?
+		Performs a delete operation on a node that has a single child.
+		:param node: The node we want to delete.
+		"""
+		parent = node.get_parent()
+		if node.get_left().is_real_node():
+			child = node.get_left()
+			child.set_parent(parent)
+			if parent.get_left() == node:
+				parent.set_left(child)
+			else:
+				parent.set_right(child)
+		elif node.get_right().is_real_node():
+			child = node.get_right()
+			child.set_parent(parent)
+			if parent.get_left() == node:
+				parent.set_left(child)
+			else:
+				parent.set_right(child)
+		node.set_parent(None)
+		node.set_left(None)
+		node.set_right(None)
 
-	def delete(self, node):
-		return -1
-
-	"""returns an array representing dictionary 
-
-	@rtype: list
-	@returns: a sorted list according to key of touples (key, value) representing the data structure
-	"""
+	def bst_delete(self, node: AVLNode) -> AVLNode:
+		"""
+		Performs a delete operation on a node in a Binary Search tree and returns the parent of the physically deleted node.
+		:param node: The node we want to delete.
+		:return: Parent of the physically deleted node.
+		"""
+		parent = node.get_parent()
+		# First we handle node is leaf.
+		if node.is_node_leaf():
+			node.disconnect_node_from_parent()
+		# Second we handle node has only one real child.
+		elif node.get_left().is_real_node() ^ node.get_right().is_real_node():
+			self.bst_delete_has_one_child(node)
+		# Last we handle node has 2 real children
+		else:
+			node_rep = self.successor(node)
+			parent = node_rep.get_parent()
+			self.bst_delete_has_one_child(node_rep)
+			node.key = node_rep.key
+			node.value = node_rep.value
+		return parent
 
 	def avl_to_array(self):
 		return None
