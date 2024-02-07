@@ -101,11 +101,7 @@ class AVLNode(object):
 		"""
 		self.right = node
 
-<<<<<<< HEAD
 	def set_parent(self, node: 'AVLNode'):
-=======
-	def set_parent(self, node: 'AVLNode' | None):
->>>>>>> 9c1c2bc ( Started working on delete)
 		"""
 		sets parent.
 		:param node: a node.
@@ -140,24 +136,6 @@ class AVLNode(object):
 		"""
 		return self.key is not None
 
-<<<<<<< HEAD
-=======
-	def is_node_leaf(self) -> bool:
-		"""
-		Checks whether node is a leaf.
-		:return: True if a leaf, False otherwise.
-		"""
-		return not self.get_left().is_real_node() and not self.get_right().is_real_node()
-
-	def disconnect_node_from_parent(self):
-		parent = self.get_parent()
-		self.set_parent(None)
-		if parent.get_left() == self:
-			parent.set_left(AVLNode())
-		else:
-			parent.set_right(AVLNode())
-
->>>>>>> 9c1c2bc ( Started working on delete)
 	def get_size(self) -> int:
 		"""
 		returns the size of the node's subtree.
@@ -294,11 +272,7 @@ class AVLTree(object):
 		@param node: a node.
 		"""
 		node.set_height(1 + max(node.get_left.get_height(), node.get_right.get_height()))
-<<<<<<< HEAD
 		node.set_size(node.get_left.get_size() + node.get_right.get_size() + 1)
-=======
-		node.set_size(1 + node.get_left.get_size() + node.get_right.get_size())
->>>>>>> 9c1c2bc ( Started working on delete)
 		node.set_balance_factor()
 
 	def balance(self, node):
@@ -418,7 +392,6 @@ class AVLTree(object):
 
 		return self.check_balance_and_maintain_upwards(node_parent)
 
-<<<<<<< HEAD
 	"""deletes node from the dictionary
 
 	@type node: AVLNode
@@ -430,33 +403,6 @@ class AVLTree(object):
 	def delete(self, node):
 		return -1
 
-=======
-	def delete(self, node: AVLNode) -> int:
-		"""
-		deletes node from the dictionary.
-		:param node: A real pointer to a node in self.
-		:return: the number of rebalancing operation due to AVL rebalancing
-		"""
-		# First we perform a delete operation as in a BST.
-
-		return -1
-
-	def BST_delete(self, node: AVLNode):
-		parent = node.get_parent()
-		# First we handle node is leaf.
-		if node.is_node_leaf():
-			node.disconnect_node_from_parent()
-		# Second we handle node has only one real child.
-		if node.get_left().is_real_node():
-			child = node.get_left()
-			# parent.set
-		pass
-
-
-
-		# Last we handle node has two real children.
-
->>>>>>> 9c1c2bc ( Started working on delete)
 	"""returns an array representing dictionary 
 
 	@rtype: list
