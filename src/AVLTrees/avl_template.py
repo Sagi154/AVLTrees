@@ -87,21 +87,21 @@ class AVLNode(object):
 		"""
 		return self.height
 
-	def set_left(self, node: 'AVLNode'):
+	def set_left(self, node: 'AVLNode' | None):
 		"""
 		sets left child.
 		:param node: a node.
 		"""
 		self.left = node
 
-	def set_right(self, node: 'AVLNode'):
+	def set_right(self, node: 'AVLNode' | None):
 		"""
 		sets right child.
 		:param node: a node.
 		"""
 		self.right = node
 
-	def set_parent(self, node: 'AVLNode'):
+	def set_parent(self, node: 'AVLNode' | None):
 		"""
 		sets parent.
 		:param node: a node.
@@ -135,6 +135,21 @@ class AVLNode(object):
 		:return: False if self is a virtual node, True otherwise.
 		"""
 		return self.key is not None
+
+	def is_node_leaf(self) -> bool:
+		"""
+		Checks whether node is a leaf.
+		:return: True if a leaf, False otherwise.
+		"""
+		return not self.get_left().is_real_node() and not self.get_right().is_real_node()
+
+	def disconnect_node_from_parent(self):
+		parent = self.get_parent()
+		self.set_parent(None)
+		if parent.get_left() == self:
+			parent.set_left(AVLNode())
+		else:
+			parent.set_right(AVLNode())
 
 	def get_size(self) -> int:
 		"""
