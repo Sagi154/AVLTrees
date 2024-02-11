@@ -358,9 +358,9 @@ class AVLTree(object):
 		It makes sure each relevant node's attributes are maintained.
 		It returns the number of nodes needed to balance the tree
 		:param pointer: The parent of the inserted/ deleted node.
-		:return: Number of rotations needed to balance the tree.
+		:return: Number of balancing operations needed to balance the tree.
 		"""
-		rotations = 0
+		balance_ops = 0
 		while pointer is not None:
 			prev_pointer_height = pointer.get_height()
 			pointer.maintain_attributes()
@@ -370,11 +370,13 @@ class AVLTree(object):
 			next_pointer = pointer.get_parent()
 			if abs(bf) < 2 and prev_pointer_height == pointer.get_height():
 				break
+			elif abs(bf) < 2 and prev_pointer_height != pointer.get_height():
+				balance_ops += 1
 			elif abs(bf) == 2:
-				rotations += self.perform_balance_rotations(pointer)
+				balance_ops += self.perform_balance_rotations(pointer)
 			logging.debug(f"pointer after rotations is{pointer}")
 			pointer = next_pointer
-		return rotations
+		return balance_ops
 
 	def check_balance_and_maintain_upwards(self, pointer):
 		"""
