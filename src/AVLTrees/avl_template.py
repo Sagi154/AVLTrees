@@ -264,8 +264,8 @@ class AVLTree(object):
 		prev_top.set_left(switched_sub_tree)
 		switched_sub_tree.set_parent(prev_top)
 		self.set_top_parent_post_rotation(new_top)
-		new_top.maintain_attributes()
 		prev_top.maintain_attributes()
+		new_top.maintain_attributes()
 		logging.debug(f"tree post left rotation with prev_top = {prev_top} and new_top = {new_top}")
 
 	def rotate_left(self, prev_top: AVLNode, new_top: AVLNode):
@@ -282,8 +282,8 @@ class AVLTree(object):
 		prev_top.set_right(switched_sub_tree)
 		switched_sub_tree.set_parent(prev_top)
 		self.set_top_parent_post_rotation(new_top)
-		new_top.maintain_attributes()
 		prev_top.maintain_attributes()
+		new_top.maintain_attributes()
 		logging.debug(f"tree post left rotation with prev_top = {prev_top} and new_top = {new_top}")
 
 	def maintain_attributes(self, node):
@@ -623,7 +623,56 @@ class AVLTree(object):
 	"""
 
 	def join(self, tree2, key, val):
-		return None
+		current_tree_height = self.get_root().get_height()
+		tree2_height = tree2.get_root().get_height()
+		heights_difference = current_tree_height - tree2_height
+		middle_node = AVLNode(key, val)
+
+		if current_tree_height > tree2_height:
+			subtree_of_taller_tree = self.get_pointer_to_lowest_key_subtree_with_specific_height(tree2_height)
+			self.connect_trees(subtree_of_taller_tree, middle_node, tree2.get_root())
+
+		elif current_tree_height < tree2_height:
+			subtree_of_taller_tree = tree2.get_pointer_to_lowest_key_subtree_with_specific_height(tree2, current_tree_height)
+			self.connect_trees(subtree_of_taller_tree, middle_node, self.get_root())
+			self.root = tree2.get_root()
+
+		else:
+			self.connect_trees(self.get_root(), middle_node, tree2.get_root())
+			self.root = middle_node
+
+		self.maintain_tree_balance(middle_node)
+
+		return 1 + abs(heights_difference)
+
+	def connect_trees(self, subtree_of_taller_tree, middle_node, shorter_tree_root):
+		if subtree_of_taller_tree.get_key() < middle_node.get_key():
+			self.make_the_connection_between_the_trees(shorter_tree_root, middle_node, subtree_of_taller_tree)
+		else:
+			self.make_the_connection_between_the_trees(subtree_of_taller_tree, middle_node, shorter_tree_root)
+
+	def get_pointer_to_lowest_key_subtree_with_specific_height(self, requested_height):
+		tmp_pointer = self.get_root
+		while tmp_pointer.get_height() > requested_height:
+			tmp_pointer = tmp_pointer.get_left()
+		return tmp_pointer
+
+	def make_the_connection_between_the_trees(self,bigger_tree_root, middle_node, smaller_tree_root):
+		middle_node.set_left(smaller_tree_root)
+		middle_node.set_right(bigger_tree_root)
+
+		if smaller_tree_root.get_parent() is not None:
+			middle_node_new_parent = smaller_tree_root.get_parent()
+			middle_node.set_parent(middle_node_new_parent)
+			middle_node.get_parent.set_right(middle_node)
+
+		elif bigger_tree_root.get_parent() is not None:
+			middle_node_new_parent = bigger_tree_root.get_parent()
+			middle_node.set_parent(middle_node_new_parent)
+			middle_node.get_parent.set_left(middle_node)
+
+		smaller_tree_root.set_parent(middle_node)
+		bigger_tree_root.set_parent(middle_node)
 
 	def get_root(self) -> AVLNode:
 		"""
