@@ -267,7 +267,6 @@ class AVLTree(object):
 		new_top.maintain_attributes()
 		prev_top.maintain_attributes()
 		logging.debug(f"tree post left rotation with prev_top = {prev_top} and new_top = {new_top}")
-		print(self)
 
 	def rotate_left(self, prev_top: AVLNode, new_top: AVLNode):
 		"""
@@ -286,7 +285,6 @@ class AVLTree(object):
 		new_top.maintain_attributes()
 		prev_top.maintain_attributes()
 		logging.debug(f"tree post left rotation with prev_top = {prev_top} and new_top = {new_top}")
-		print(self)
 
 	def maintain_attributes(self, node):
 		"""
