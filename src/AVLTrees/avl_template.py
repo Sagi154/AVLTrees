@@ -4,24 +4,15 @@
 # id2      - complete info
 # name2    - complete info
 
+from __future__ import annotations
+
+import logging
 import math
+from printree import *
 
 
 class AVLNode(object):
 	"""A class representing a node in an AVL tree"""
-
-	def __init__(self):
-		"""
-		A constructor used to create virtual nodes.
-		"""
-		self.key = None
-		self.value = None
-		self.left = None
-		self.right = None
-		self.parent = None
-		self.height = -1
-		self.size = 0
-		self.bf = 0
 
 	def __init__(self, key: int | None, value):
 		"""
@@ -29,37 +20,45 @@ class AVLNode(object):
 		:param key: key or your node.
 		:param value: data of your node.
 		"""
-		self.key = key
-		self.value = value
-		self.left = AVLNode()
-		self.right = AVLNode()
-		self.parent = None
-		# TODO : figure out how height attribute maintenance should work
-		self.height = 0
-		self.size = 1
-		"""
-		The size of the sub tree this node is the root of.
-		"""
-		self.bf = None
-		"""
-		The balance factor of this node.
-		"""
+		if key is None:
+			# Creates a virtual node
+			self.key = None
+			self.value = None
+			self.left = None
+			self.right = None
+			self.parent = None
+			self.height = -1
+			self.size = 0
+			self.bf = 0
+		else:
+			self.key = key
+			self.value = value
+			self.left = AVLNode(None, None)
+			self.right = AVLNode(None, None)
+			self.parent = None
+			self.height = 0
+			self.size = 1
+			""" The size of the sub tree this node is the root of. """
+			self.bf = 0
+			"""
+			The balance factor of this node.
+			"""
 
-	def get_left(self) -> 'AVLNode' | None:
+	def get_left(self) -> AVLNode | None:
 		"""
 		returns the left child.
 		:return: the left child of self, None if there is no left child (if self is virtual)
 		"""
 		return self.left
 
-	def get_right(self) -> 'AVLNode' | None:
+	def get_right(self) -> AVLNode | None:
 		"""
 		returns the right child.
 		:return: the right child of self, None if there is no right child (if self is virtual)
 		"""
 		return self.right
 
-	def get_parent(self) -> 'AVLNode' | None:
+	def get_parent(self) -> AVLNode | None:
 		"""
 		returns the parent.
 		:return: the parent of self, None if there is no parent.
@@ -87,21 +86,21 @@ class AVLNode(object):
 		"""
 		return self.height
 
-	def set_left(self, node: 'AVLNode' | None):
+	def set_left(self, node: AVLNode | None):
 		"""
 		sets left child.
 		:param node: a node.
 		"""
 		self.left = node
 
-	def set_right(self, node: 'AVLNode' | None):
+	def set_right(self, node: AVLNode | None):
 		"""
 		sets right child.
 		:param node: a node.
 		"""
 		self.right = node
 
-	def set_parent(self, node: 'AVLNode' | None):
+	def set_parent(self, node: AVLNode | None):
 		"""
 		sets parent.
 		:param node: a node.
@@ -147,9 +146,9 @@ class AVLNode(object):
 		parent = self.get_parent()
 		self.set_parent(None)
 		if parent.get_left() == self:
-			parent.set_left(AVLNode())
+			parent.set_left(AVLNode(None, None))
 		else:
-			parent.set_right(AVLNode())
+			parent.set_right(AVLNode(None, None))
 
 	def get_size(self) -> int:
 		"""
@@ -178,6 +177,17 @@ class AVLNode(object):
 		"""
 		self.bf = self.left.get_height() - self.right.get_height()
 
+	def maintain_attributes(self):
+		"""
+		Calculate and update the height, size and the balance factor of node.
+		"""
+		self.set_height(1 + max(self.get_left().get_height(), self.get_right().get_height()))
+		self.set_size(1 + self.get_left().get_size() + self.get_right().get_size())
+		self.set_balance_factor()
+
+	def __repr__(self):
+		return f"({str(self.key)} : {str(self.value)} : bf - {self.bf} : height - {self.height} : size - {self.size})"
+
 
 class AVLTree(object):
 	"""
@@ -190,18 +200,36 @@ class AVLTree(object):
 
 		"""
 		self.root = root
+		self.tree_array = []
+
+	def __repr__(self):  # no need to understand the implementation of this one
+		out = ""
+		for row in printree(self.root):  # need printree.py file
+			out = out + row + "\n"
+		return out
 
 	# add your fields here
 
-	# TODO: move to AVLNode
-	def min(self, node: AVLNode) -> AVLNode:
+	@staticmethod
+	def min(node: AVLNode) -> AVLNode:
+		"""
+
+		:param node:
+		:return:
+		"""
 		while node.get_left().is_real_node():
 			node = node.get_left()
 		return node
 
-	def successor(self, node: AVLNode) -> AVLNode:
+	@staticmethod
+	def successor(node: AVLNode) -> AVLNode:
+		"""
+
+		:param node:
+		:return:
+		"""
 		if node.get_right().is_real_node():
-			return self.min(node.get_right())
+			return AVLTree.min(node.get_right())
 		temp_parent = node.get_parent()
 		while temp_parent is not None and node == temp_parent.get_right():
 			node = temp_parent
@@ -215,12 +243,13 @@ class AVLTree(object):
 		"""
 		prev_top_parent = post_rotate_new_top.get_parent()
 		if prev_top_parent is not None:
-			if prev_top_parent.get_value() < post_rotate_new_top.get_value():
+			if prev_top_parent.get_key() < post_rotate_new_top.get_key():
 				prev_top_parent.set_right(post_rotate_new_top)
 			else:
 				prev_top_parent.set_left(post_rotate_new_top)
 
-	def right_rotate_2(self, prev_top: AVLNode, new_top: AVLNode):
+	# TODO: Figure out how to maintain attributes (in rotate or outside).
+	def rotate_right(self, prev_top: AVLNode, new_top: AVLNode):
 		"""
 		Performs a right rotation.
 		:param prev_top: The Parent of new_top, rotated to become right child of new_top.
@@ -229,15 +258,18 @@ class AVLTree(object):
 		prev_top_parent = prev_top.get_parent()
 		switched_sub_tree = new_top.get_right()
 		new_top.set_right(prev_top)
+
 		new_top.set_parent(prev_top_parent)
 		prev_top.set_parent(new_top)
 		prev_top.set_left(switched_sub_tree)
 		switched_sub_tree.set_parent(prev_top)
 		self.set_top_parent_post_rotation(new_top)
-		self.maintain_attributes(new_top)
-		self.maintain_attributes(prev_top)
+		new_top.maintain_attributes()
+		prev_top.maintain_attributes()
+		logging.debug(f"tree post left rotation with prev_top = {prev_top} and new_top = {new_top}")
+		print(self)
 
-	def left_rotate_2(self, prev_top: AVLNode, new_top: AVLNode):
+	def rotate_left(self, prev_top: AVLNode, new_top: AVLNode):
 		"""
 		Performs a left rotation.
 		:param prev_top: The Parent of new_top, rotated to become left child of new_top.
@@ -251,50 +283,10 @@ class AVLTree(object):
 		prev_top.set_right(switched_sub_tree)
 		switched_sub_tree.set_parent(prev_top)
 		self.set_top_parent_post_rotation(new_top)
-		self.maintain_attributes(new_top)
-		self.maintain_attributes(prev_top)
-
-	def rotate_right(self, parent, node):
-		"""
-		rotate the subtree of parent to the right
-		@param parent:
-		@param node:
-		"""
-
-		parent.set_left(node.get_right)
-		node.get_right().set_parent(parent)
-		node.set_parent(parent.get_parent())
-		parent.set_parent(node)
-		node.set_right(parent)
-		self.maintain_attributes(parent)
-		self.maintain_attributes(node)
-		self.set_node_parent(node)
-
-	def rotate_left(self, parent, node):
-		"""
-		rotate the subtree of parent to the left
-		@param parent:
-		@param node:
-		"""
-
-		parent.set_right(node.get_left)
-		node.get_left().set_parent(parent)
-		node.set_parent(parent.get_parent())
-		parent.set_parent(node)
-		node.set_left(parent)
-		self.maintain_attributes(parent)
-		self.maintain_attributes(node)
-		self.set_node_parent(node)
-
-	def set_node_parent(self, node):
-		"""
-		set the node as a son of the parent after a rotation
-		@param node:
-		"""
-		if node.parent is not None:
-			if node.parent.get_value() > node.get_value():
-				node.parent.set_left(node)
-			node.parent.set_right(node)
+		new_top.maintain_attributes()
+		prev_top.maintain_attributes()
+		logging.debug(f"tree post left rotation with prev_top = {prev_top} and new_top = {new_top}")
+		print(self)
 
 	def maintain_attributes(self, node):
 		"""
@@ -302,7 +294,7 @@ class AVLTree(object):
 		@param node: a node.
 		"""
 		node.set_height(1 + max(node.get_left.get_height(), node.get_right.get_height()))
-		node.set_size(node.get_left.get_size() + node.get_right.get_size() + 1)
+		node.set_size(1 + node.get_left.get_size() + node.get_right.get_size())
 		node.set_balance_factor()
 
 	def balance(self, node):
@@ -326,8 +318,63 @@ class AVLTree(object):
 				node.get_left().rotate_left(node.get_left(), node.get_left().get_right())
 			node.rotate_right(node, node.get_left())
 		else:
-			self.maintain_attributes(node)
+			node.maintain_attributes()
 		return num_of_rotates
+
+	def perform_balance_rotations(self, pointer: AVLNode) -> int:
+		"""
+		Performs the rotations needed to balance the tree.
+		:param pointer: The root of the current subtree we want to balance.
+		:return: Number of rotations needed to balance the tree.
+		"""
+		rotations = 1
+		node_bf = pointer.get_balance_factor()
+		if node_bf == -2:
+			right_child = pointer.get_right()
+			if right_child.get_balance_factor() == 1:
+				self.rotate_right(prev_top=right_child, new_top=right_child.get_left())
+				rotations = 2
+				# right_child = right_child.get_left()
+				right_child = pointer.get_right()
+			self.rotate_left(prev_top=pointer, new_top=right_child)
+			if self.root == pointer:
+				self.root = right_child
+		elif node_bf == 2:
+			left_child = pointer.get_left()
+			if left_child.get_balance_factor() == -1:
+				self.rotate_left(prev_top=left_child, new_top=left_child.get_right())
+				rotations = 2
+				# left_child = left_child.get_right()
+				left_child = pointer.get_left()
+			self.rotate_right(prev_top=pointer, new_top=left_child)
+			if self.root == pointer:
+				self.root = left_child
+		return rotations
+
+	def maintain_tree_balance(self, pointer: AVLNode) -> int:
+		"""
+		This method makes sure the tree is balanced. It goes up the path from the
+		deleted/inserted node's parent to the root and balances the tree.
+		It makes sure each relevant node's attributes are maintained.
+		It returns the number of nodes needed to balance the tree
+		:param pointer: The parent of the inserted/ deleted node.
+		:return: Number of rotations needed to balance the tree.
+		"""
+		rotations = 0
+		while pointer is not None:
+			prev_pointer_height = pointer.get_height()
+			pointer.maintain_attributes()
+			logging.debug("in maintain tree balance")
+			logging.debug(f"pointer is{pointer}")
+			bf = pointer.get_balance_factor()
+			next_pointer = pointer.get_parent()
+			if abs(bf) < 2 and prev_pointer_height == pointer.get_height():
+				break
+			elif abs(bf) == 2:
+				rotations += self.perform_balance_rotations(pointer)
+			logging.debug(f"pointer after rotations is{pointer}")
+			pointer = next_pointer
+		return rotations
 
 	def check_balance_and_maintain_upwards(self, pointer):
 		"""
@@ -345,7 +392,7 @@ class AVLTree(object):
 
 		while pointer is not None:
 			pointer_height = pointer.get_height()
-			self.maintain_attributes(pointer)
+			pointer.maintain_attributes()
 			if not_balanced:
 				if abs(pointer.get_balance_factor()) < 2:
 					if pointer_height == pointer.get_height():
@@ -358,8 +405,26 @@ class AVLTree(object):
 			pointer = pointer.get_parent()
 		return num_of_rotates
 
+	def tree_position(self, new_node_key):
+		"""
+		Finds insertion position of a node with a given key new_node_key.
+		:param new_node_key: The key of the node we want to insert
+		:return: Position of the future parent of the new node.
+		"""
+		pointer = self.root
+		parent_position = pointer
+		while pointer is not None and pointer.is_real_node():
+			parent_position = pointer
+			if new_node_key < pointer.key:
+				pointer = pointer.get_left()
+			else:
+				pointer = pointer.get_right()
+		return parent_position
+
 	def node_parent_position(self, new_node_val):
 		"""
+		----- Fixed and changed to tree_position ----------
+		---------------------------------------------------
 		searching for the node who will be the parent of the node that will be inserted
 		@param new_node_val: the value of the node that will be inserted
 		@return: the position of the node who will be the parent of the node that will be inserted
@@ -384,7 +449,7 @@ class AVLTree(object):
 		:return: the AVLNode corresponding to key or None if key is not found.
 		"""
 		temp_root = self.root
-		while temp_root is not None:
+		while temp_root.is_real_node():
 			if key == temp_root.key:
 				return temp_root
 			elif key < temp_root.key:
@@ -393,34 +458,41 @@ class AVLTree(object):
 				temp_root = temp_root.right
 		return None
 
-	"""inserts val at position i in the dictionary
-
-	@type key: int
-	@pre: key currently does not appear in the dictionary
-	@param key: key of item that is to be inserted to self
-	@type val: any
-	@param val: the value of the item
-	@rtype: int
-	@returns: the number of rebalancing operation due to AVL rebalancing
-	"""
-
-	def insert(self, key, val):
-		node = AVLNode(key, val)
-
+	def insert(self, key: int, val) -> int:
+		"""
+		inserts val at position i in the dictionary
+		:param key: key of item that is to be inserted to self, @pre currently does not appear in the dictionary.
+		:param val: the value of the item
+		:return: the number of rebalancing operation due to AVL rebalancing
+		"""
+		new_node = AVLNode(key, val)
 		if self.get_root() is None:
-			self.root = node
-			self.maintain_attributes(node)
+			self.root = new_node
+			new_node.maintain_attributes()
 			return 0
-
-		node_parent = self.node_parent_position(val)
-
-		if node_parent.get_value() > val:
-			node_parent.set_right(node)
+		node_parent = self.tree_position(new_node.get_key())
+		new_node.set_parent(node_parent)
+		if new_node.get_key() > node_parent.get_key():
+			node_parent.set_right(new_node)
 		else:
-			node_parent.set_left(node)
-		node.set_parent(node_parent)
+			node_parent.set_left(new_node)
+		new_node.maintain_attributes()
+		# self.update_attributes(node_parent)
+		logging.debug("Tree before balancing")
+		logging.debug(f"\n{self}")
+		return self.maintain_tree_balance(node_parent)
+		# return self.check_balance_and_maintain_upwards(node_parent)
 
-		return self.check_balance_and_maintain_upwards(node_parent)
+	def update_attributes(self, pointer):
+		"""
+		Used for testing
+		:param pointer:
+		:return:
+		"""
+		pointer.maintain_attributes()
+		while pointer is not None:
+			pointer.maintain_attributes()
+			pointer = pointer.get_parent()
 
 	def delete(self, node: AVLNode) -> int:
 		"""
@@ -430,7 +502,8 @@ class AVLTree(object):
 		"""
 		# First we perform a delete operation as in a BST.
 		node_parent = self.bst_delete(node)
-		return self.check_balance_and_maintain_upwards(node_parent)
+		# Then we balance the tree.
+		return self.maintain_tree_balance(node_parent)
 
 	@staticmethod
 	def bst_delete_has_one_child(node: AVLNode):
@@ -458,7 +531,25 @@ class AVLTree(object):
 		node.set_left(None)
 		node.set_right(None)
 
-	def bst_delete(self, node: AVLNode) -> AVLNode:
+	@staticmethod
+	def bst_delete_has_twins(node: AVLNode) -> AVLNode:
+		# Find node successor
+		node_succ = AVLTree.successor(node)
+		# His parent is the parent of the physically deleted node.
+		parent = node_succ.get_parent()
+		# Remove node_succ from the tree
+		AVLTree.bst_delete_has_one_child(node_succ)
+		# replace node by node_succ
+		node_succ.set_parent(node.get_parent())
+		node_succ.set_left(node.get_left())
+		node_succ.set_right(node.get_right())
+		node.set_parent(None)
+		node.set_left(None)
+		node.set_right(None)
+		return parent
+
+	@staticmethod
+	def bst_delete(node: AVLNode) -> AVLNode:
 		"""
 		Performs a delete operation on a node in a Binary Search tree and returns the parent of the physically deleted node.
 		:param node: The node we want to delete.
@@ -470,18 +561,32 @@ class AVLTree(object):
 			node.disconnect_node_from_parent()
 		# Second we handle node has only one real child.
 		elif node.get_left().is_real_node() ^ node.get_right().is_real_node():
-			self.bst_delete_has_one_child(node)
+			AVLTree.bst_delete_has_one_child(node)
 		# Last we handle node has 2 real children
 		else:
-			node_rep = self.successor(node)
-			parent = node_rep.get_parent()
-			self.bst_delete_has_one_child(node_rep)
-			node.key = node_rep.key
-			node.value = node_rep.value
+			parent = AVLTree.bst_delete_has_twins(node)
 		return parent
 
-	def avl_to_array(self):
-		return None
+	def avl_to_array(self) -> list:
+		"""
+		returns an array representing dictionary
+		:return: a sorted list according to key of touples (key, value) representing the data structure
+		"""
+		self.tree_array = []
+		self.sorted_order(self.root)
+		array = self.tree_array
+		self.tree_array = []
+		return array
+
+	def sorted_order(self, node: AVLNode):
+		"""
+		Performs an in-order scan of the tree.
+		:param node:
+		"""
+		if node.is_real_node():
+			self.sorted_order(node.get_left())
+			self.tree_array.append(node)
+			self.sorted_order(node.get_right())
 
 	def size(self) -> int:
 		"""

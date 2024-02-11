@@ -1,0 +1,225 @@
+[DEBUG] 2024-02-11 03:35:43 Tree before balancing
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 Tree before balancing
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(6 : asd : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:35:43 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:35:43 tree post left rotation with prev_top = (6 : asd : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(6 : asd : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:35:43 Tree before balancing
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:35:43 Tree before balancing
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(8 : asdf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:35:43 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (13 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(8 : asdf : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:35:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:35:43 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:35:43 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:36:43 Tree before balancing
+[DEBUG] 2024-02-11 03:36:43   key:6, bf:0, height:0, size:1                                  
+ /                             \__                               
+#                                 key:8, bf:0, height:0, size:1  
+                                 /                             \ 
+                                #                               #
+
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 Tree before balancing
+[DEBUG] 2024-02-11 03:36:43   key:6, bf:-1, height:1, size:2                                                                  
+ /                              \__________________________________                               
+#                                                                  key:8, bf:0, height:0, size:1  
+                                                                __/                             \ 
+                                   key:7, bf:0, height:0, size:1                                 #
+                                  /                             \                                 
+                                 #                               #                                
+
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(6 : asd : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:36:43 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:36:43 tree post left rotation with prev_top = (6 : asd : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(6 : asd : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:36:43 Tree before balancing
+[DEBUG] 2024-02-11 03:36:43                                   key:7, bf:2, height:3, size:5                                                                   
+                               __/                             \__                                                                
+  key:6, bf:0, height:0, size:1                                   key:8, bf:0, height:0, size:1                                   
+ /                             \                                 /                             \__                                
+#                               #                               #                                 key:13, bf:0, height:0, size:1  
+                                                                                                 /                              \ 
+                                                                                                #                                #
+
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:36:43 Tree before balancing
+[DEBUG] 2024-02-11 03:36:43                                   key:7, bf:-1, height:2, size:4                                                                                                     
+                               __/                              \__                                                                                                  
+  key:6, bf:0, height:0, size:1                                    key:8, bf:-1, height:1, size:2                                                                    
+ /                             \                                  /                              \__                                                                 
+#                               #                                #                                  key:13, bf:0, height:0, size:1                                   
+                                                                                                   /                              \__                                
+                                                                                                  #                                  key:17, bf:0, height:0, size:1  
+                                                                                                                                    /                              \ 
+                                                                                                                                   #                                #
+
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(8 : asdf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:36:43 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (13 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(8 : asdf : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:36:43 in maintain tree balance
+[DEBUG] 2024-02-11 03:36:43 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:36:43 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:37:48 Tree before balancing
+[DEBUG] 2024-02-11 03:38:49 Tree before balancing
+[DEBUG] 2024-02-11 03:38:49 
+{self}
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 Tree before balancing
+[DEBUG] 2024-02-11 03:38:49 
+{self}
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(6 : asd : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:38:49 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:38:49 tree post left rotation with prev_top = (6 : asd : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(6 : asd : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:38:49 Tree before balancing
+[DEBUG] 2024-02-11 03:38:49 
+{self}
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:38:49 Tree before balancing
+[DEBUG] 2024-02-11 03:38:49 
+{self}
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(8 : asdf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:38:49 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (13 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(8 : asdf : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:38:49 in maintain tree balance
+[DEBUG] 2024-02-11 03:38:49 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:38:49 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:39:11 Tree before balancing
+[DEBUG] 2024-02-11 03:39:11 
+  key:6, bf:0, height:0, size:1                                  
+ /                             \__                               
+#                                 key:8, bf:0, height:0, size:1  
+                                 /                             \ 
+                                #                               #
+
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(6 : asd : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 Tree before balancing
+[DEBUG] 2024-02-11 03:39:11 
+  key:6, bf:-1, height:1, size:2                                                                  
+ /                              \__________________________________                               
+#                                                                  key:8, bf:0, height:0, size:1  
+                                                                __/                             \ 
+                                   key:7, bf:0, height:0, size:1                                 #
+                                  /                             \                                 
+                                 #                               #                                
+
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(8 : asdf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(6 : asd : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:39:11 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:39:11 tree post left rotation with prev_top = (6 : asd : bf - 0 : height - 0 : size - 1) and new_top = (7 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(6 : asd : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:39:11 Tree before balancing
+[DEBUG] 2024-02-11 03:39:11 
+                                  key:7, bf:2, height:3, size:5                                                                   
+                               __/                             \__                                                                
+  key:6, bf:0, height:0, size:1                                   key:8, bf:0, height:0, size:1                                   
+ /                             \                                 /                             \__                                
+#                               #                               #                                 key:13, bf:0, height:0, size:1  
+                                                                                                 /                              \ 
+                                                                                                #                                #
+
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(8 : asdf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:39:11 Tree before balancing
+[DEBUG] 2024-02-11 03:39:11 
+                                  key:7, bf:-1, height:2, size:4                                                                                                     
+                               __/                              \__                                                                                                  
+  key:6, bf:0, height:0, size:1                                    key:8, bf:-1, height:1, size:2                                                                    
+ /                             \                                  /                              \__                                                                 
+#                               #                                #                                  key:13, bf:0, height:0, size:1                                   
+                                                                                                   /                              \__                                
+                                                                                                  #                                  key:17, bf:0, height:0, size:1  
+                                                                                                                                    /                              \ 
+                                                                                                                                   #                                #
+
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(13 : asf : bf - -1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(8 : asdf : bf - -2 : height - 2 : size - 3)
+[DEBUG] 2024-02-11 03:39:11 tree post left rotation with prev_top = (8 : asdf : bf - 0 : height - 0 : size - 1) and new_top = (13 : asf : bf - 2 : height - 3 : size - 5)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(8 : asdf : bf - 0 : height - 0 : size - 1)
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(7 : asf : bf - -3 : height - 4 : size - 7)
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(13 : asf : bf - 1 : height - 1 : size - 2)
+[DEBUG] 2024-02-11 03:39:11 in maintain tree balance
+[DEBUG] 2024-02-11 03:39:11 pointer is(7 : asf : bf - -1 : height - 2 : size - 4)
+[DEBUG] 2024-02-11 03:39:11 pointer after rotations is(7 : asf : bf - -1 : height - 2 : size - 4)
