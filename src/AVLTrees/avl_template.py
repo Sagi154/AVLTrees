@@ -676,22 +676,37 @@ class AVLTree(object):
 			heights_difference = current_tree_height - tree2_height
 			middle_node = AVLNode(key, val)
 
-			if current_tree_height > tree2_height:
-				subtree_of_taller_tree = self.get_pointer_to_lowest_key_subtree_with_specific_height(tree2_height)
-				self.connect_trees(subtree_of_taller_tree, middle_node, tree2.get_root())
-
-			elif current_tree_height < tree2_height:
-				subtree_of_taller_tree = tree2.get_pointer_to_lowest_key_subtree_with_specific_height(current_tree_height)
-				self.connect_trees(subtree_of_taller_tree, middle_node, self.get_root())
-				self.root = tree2.get_root()
-
+			if self.get_root().get_key() > middle_node.get_key():
+				self.choose_order_and_connect(tree2.get_root(), middle_node, self.get_root())
 			else:
-				self.connect_trees(self.get_root(), middle_node, tree2.get_root())
-				self.root = middle_node
-
-			self.maintain_tree_balance(middle_node)
+				self.choose_order_and_connect(self.get_root(), middle_node, tree2.get_root())
 
 			return 1 + abs(heights_difference)
+
+
+	def choose_order_and_connect(self, smaller_tree_root, middle_node, bigger_tree_root):
+		smaller_tree_height = smaller_tree_root.get_height()
+		bigger_tree_height = bigger_tree_root.get_height()
+
+		if smaller_tree_height > bigger_tree_height:
+			subtree_of_taller_tree_root = self.get_pointer_to_highest_key_subtree_with_specific_height(smaller_tree_root ,smaller_tree_height)
+			if not subtree_of_taller_tree_root.is_real_node():
+				subtree_of_taller_tree_root = subtree_of_taller_tree_root.get_parent()
+			self.connect_trees(subtree_of_taller_tree_root, middle_node, bigger_tree_root)
+			self.root = smaller_tree_root
+
+		elif smaller_tree_height < bigger_tree_height:
+			subtree_of_taller_tree_root = self.get_pointer_to_lowest_key_subtree_with_specific_height(bigger_tree_root, bigger_tree_root)
+			if not subtree_of_taller_tree_root.is_real_node():
+				subtree_of_taller_tree_root = subtree_of_taller_tree_root.get_parent()
+			self.connect_trees(subtree_of_taller_tree_root, middle_node, smaller_tree_root)
+			self.root = bigger_tree_root
+
+		else:
+			self.connect_trees(smaller_tree_root, middle_node, bigger_tree_root)
+			self.root = middle_node
+
+		self.maintain_tree_balance(middle_node)
 
 	def connect_trees(self, subtree_of_taller_tree, middle_node, shorter_tree_root):
 		print(f"subtree {subtree_of_taller_tree}")
@@ -700,13 +715,24 @@ class AVLTree(object):
 		else:
 			self.make_the_connection_between_the_trees(subtree_of_taller_tree, middle_node, shorter_tree_root)
 
-	def get_pointer_to_lowest_key_subtree_with_specific_height(self, requested_height):
+	def get_pointer_to_lowest_key_subtree_with_specific_height(self, tree_root, requested_height):
 		print("requested_height", requested_height)
 		print(f"height of self {self.get_root()}")
-		tmp_pointer = self.get_root()
-		while tmp_pointer.get_height() > requested_height and tmp_pointer.get_left().is_real_node():
+		tmp_pointer = tree_root
+		while tmp_pointer.get_height() > requested_height and tmp_pointer.get_left() is not None:
 			print(f"pointer {tmp_pointer}")
 			tmp_pointer = tmp_pointer.get_left()
+
+		return tmp_pointer
+
+	def get_pointer_to_highest_key_subtree_with_specific_height(self, tree_root, requested_height):
+		print("requested_height", requested_height)
+		print(f"height of self {self.get_root()}")
+		tmp_pointer = tree_root
+		while tmp_pointer.get_height() > requested_height and tmp_pointer.get_right() is not None:
+			print(f"pointer {tmp_pointer}")
+			tmp_pointer = tmp_pointer.get_right()
+
 		return tmp_pointer
 
 	def make_the_connection_between_the_trees(self,bigger_tree_root, middle_node, smaller_tree_root):
