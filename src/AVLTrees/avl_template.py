@@ -645,27 +645,40 @@ class AVLTree(object):
 	"""
 
 	def join(self, tree2, key, val):
-		current_tree_height = self.get_root().get_height()
-		tree2_height = tree2.get_root().get_height()
-		heights_difference = current_tree_height - tree2_height
-		middle_node = AVLNode(key, val)
-
-		if current_tree_height > tree2_height:
-			subtree_of_taller_tree = self.get_pointer_to_lowest_key_subtree_with_specific_height(tree2_height)
-			self.connect_trees(subtree_of_taller_tree, middle_node, tree2.get_root())
-
-		elif current_tree_height < tree2_height:
-			subtree_of_taller_tree = tree2.get_pointer_to_lowest_key_subtree_with_specific_height(tree2, current_tree_height)
-			self.connect_trees(subtree_of_taller_tree, middle_node, self.get_root())
-			self.root = tree2.get_root()
+		if (tree2.get_root() is None) or (not tree2.get_root().is_real_node()):
+			if (self.get_root() is None) or (not self.get_root().is_real_node()):
+				new_root = AVLNode(key, val)
+				self.root = new_root
+				return 1
+			else:
+				self.insert(key=key, val=val)
+				return 1 + self.get_root().get_height()
+		elif (self.get_root() is None) or (not self.get_root().is_real_node()):
+			tree2.insert(key=key, val=val)
+			return 1 + tree2.get_root().get_height()
 
 		else:
-			self.connect_trees(self.get_root(), middle_node, tree2.get_root())
-			self.root = middle_node
+			current_tree_height = self.get_root().get_height()
+			tree2_height = tree2.get_root().get_height()
+			heights_difference = current_tree_height - tree2_height
+			middle_node = AVLNode(key, val)
 
-		self.maintain_tree_balance(middle_node)
+			if current_tree_height > tree2_height:
+				subtree_of_taller_tree = self.get_pointer_to_lowest_key_subtree_with_specific_height(tree2_height)
+				self.connect_trees(subtree_of_taller_tree, middle_node, tree2.get_root())
 
-		return 1 + abs(heights_difference)
+			elif current_tree_height < tree2_height:
+				subtree_of_taller_tree = tree2.get_pointer_to_lowest_key_subtree_with_specific_height(current_tree_height)
+				self.connect_trees(subtree_of_taller_tree, middle_node, self.get_root())
+				self.root = tree2.get_root()
+
+			else:
+				self.connect_trees(self.get_root(), middle_node, tree2.get_root())
+				self.root = middle_node
+
+			self.maintain_tree_balance(middle_node)
+
+			return 1 + abs(heights_difference)
 
 	def connect_trees(self, subtree_of_taller_tree, middle_node, shorter_tree_root):
 		if subtree_of_taller_tree.get_key() < middle_node.get_key():

@@ -35,6 +35,7 @@ def main():
     node = bst.search(8)
     print(node)
     bst.split(node)
+    print(bst)
     # node = bst.search(17)
     # print(f"tree before deleting {node} ")
     # print(bst)
