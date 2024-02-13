@@ -32,10 +32,20 @@ def main():
     print(f"tree after inserting {node4} ")
     print(bst)
 
-    node = bst.search(8)
-    print(node)
-    bst.split(node)
+    bst.insert(19,"asdf")
+    bst.insert(5,"asdf")
+    bst.insert(83,"asdf")
+    bst.insert(2,"asdf")
+    bst.insert(9,"asdf")
+    bst.insert(1,"asdf")
     print(bst)
+
+
+    node = bst.search(9)
+    print(node)
+    lst = bst.split(node)
+    print(f"Tree left {lst[0]}")
+    print(f"Tree right {lst[1]}")
     # node = bst.search(17)
     # print(f"tree before deleting {node} ")
     # print(bst)

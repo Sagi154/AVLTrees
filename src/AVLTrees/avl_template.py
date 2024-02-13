@@ -615,19 +615,26 @@ class AVLTree(object):
 				right_tree_nodes.append(temp_path_node)
 			prev_path_node = temp_path_node
 			temp_path_node = temp_path_node.get_parent()
+		print(f"left list {left_tree_nodes}")
+		print(f"right list {right_tree_nodes}")
 		# Then we create the trees
-		left_tree: AVLTree = AVLTree(left_tree_nodes[0].get_left())
+		left_tree: AVLTree = AVLTree(left_tree_nodes[0])
+		print("before first join")
 		left_tree.join(tree2=AVLTree(node.get_left()), key=left_tree_nodes[0].get_key(),
 						val=left_tree_nodes[0].get_value())
-		right_tree: AVLTree = AVLTree(node.get_right())
-		right_tree.join(tree2=AVLTree(right_tree_nodes[0].get_right()), key=right_tree_nodes[0].get_key(),
+		right_tree: AVLTree = AVLTree(right_tree_nodes[0].get_right())
+		right_tree.join(tree2=AVLTree(node.get_right()), key=right_tree_nodes[0].get_key(),
 						val=right_tree_nodes[0].get_value())
+		print(f"left_tree: {left_tree}")
 		for left_node in left_tree_nodes[1:]:
-			left_tree = AVLTree(left_node.get_left()).join(tree2=left_tree, key=left_node.get_key(),
+			print(f"in for print {left_node}")
+			temp_left = AVLTree(left_node.get_left())
+			temp_left.join(tree2=AVLTree(left_node.get_left()), key=left_node.get_key(),
 														   val=left_node.get_value())
+			left_tree = temp_left
 		for right_node in right_tree_nodes[1:]:
-			right_tree.join(tree2=AVLTree(right_node.get_right()), key=right_node.get_key(),
-							val=right_node.get_value())
+			right_tree = AVLTree(right_node.get_right()).join(tree2=right_tree, key=right_node.get_key(),
+															  val=right_node.get_value())
 		trees_list = [left_tree, right_tree]
 		return trees_list
 
@@ -645,6 +652,10 @@ class AVLTree(object):
 	"""
 
 	def join(self, tree2, key, val):
+		print("------call for join---------")
+		print(f"self tree is {self}")
+		print(f"tree2 is {tree2}")
+		print(f"node is {key} {val}")
 		if (tree2.get_root() is None) or (not tree2.get_root().is_real_node()):
 			if (self.get_root() is None) or (not self.get_root().is_real_node()):
 				new_root = AVLNode(key, val)
@@ -654,8 +665,10 @@ class AVLTree(object):
 				self.insert(key=key, val=val)
 				return 1 + self.get_root().get_height()
 		elif (self.get_root() is None) or (not self.get_root().is_real_node()):
+			prev_tree2_height = tree2.get_root().get_height()
 			tree2.insert(key=key, val=val)
-			return 1 + tree2.get_root().get_height()
+			self.root = tree2.get_root()
+			return 1 + prev_tree2_height
 
 		else:
 			current_tree_height = self.get_root().get_height()
@@ -681,14 +694,18 @@ class AVLTree(object):
 			return 1 + abs(heights_difference)
 
 	def connect_trees(self, subtree_of_taller_tree, middle_node, shorter_tree_root):
+		print(f"subtree {subtree_of_taller_tree}")
 		if subtree_of_taller_tree.get_key() < middle_node.get_key():
 			self.make_the_connection_between_the_trees(shorter_tree_root, middle_node, subtree_of_taller_tree)
 		else:
 			self.make_the_connection_between_the_trees(subtree_of_taller_tree, middle_node, shorter_tree_root)
 
 	def get_pointer_to_lowest_key_subtree_with_specific_height(self, requested_height):
+		print("requested_height", requested_height)
+		print(f"height of self {self.get_root()}")
 		tmp_pointer = self.get_root()
-		while tmp_pointer.get_height() > requested_height:
+		while tmp_pointer.get_height() > requested_height and tmp_pointer.get_left().is_real_node():
+			print(f"pointer {tmp_pointer}")
 			tmp_pointer = tmp_pointer.get_left()
 		return tmp_pointer
 
@@ -699,12 +716,12 @@ class AVLTree(object):
 		if smaller_tree_root.get_parent() is not None:
 			middle_node_new_parent = smaller_tree_root.get_parent()
 			middle_node.set_parent(middle_node_new_parent)
-			middle_node.get_parent.set_right(middle_node)
+			middle_node.get_parent().set_right(middle_node)
 
 		elif bigger_tree_root.get_parent() is not None:
 			middle_node_new_parent = bigger_tree_root.get_parent()
 			middle_node.set_parent(middle_node_new_parent)
-			middle_node.get_parent.set_left(middle_node)
+			middle_node.get_parent().set_left(middle_node)
 
 		smaller_tree_root.set_parent(middle_node)
 		bigger_tree_root.set_parent(middle_node)
