@@ -595,19 +595,41 @@ class AVLTree(object):
 		"""
 		return self.root.size
 
-	"""splits the dictionary at the i'th index
-
-	@type node: AVLNode
-	@pre: node is in self
-	@param node: The intended node in the dictionary according to whom we split
-	@rtype: list
-	@returns: a list [left, right], where left is an AVLTree representing the keys in the 
-	dictionary smaller than node.key, right is an AVLTree representing the keys in the 
-	dictionary larger than node.key.
-	"""
-
-	def split(self, node):
-		return None
+	def split(self, node: AVLNode) -> list:
+		"""
+		splits the dictionary at the i'th index
+		:param node: The intended node in the dictionary according to whom we split, @pre node is in self
+		:return: a list [left, right], where left is an AVLTree representing the keys in the
+		dictionary smaller than node.key, right is an AVLTree representing the keys in the
+		dictionary larger than node.key.
+		"""
+		left_tree_nodes: list[AVLNode] = []
+		right_tree_nodes: list[AVLNode] = []
+		prev_path_node = node
+		temp_path_node = node.get_parent()
+		# First we collect the nodes that will be used to build each tree
+		while temp_path_node is not None:
+			if temp_path_node.get_right() == prev_path_node:
+				left_tree_nodes.append(temp_path_node)
+			else:
+				right_tree_nodes.append(temp_path_node)
+			prev_path_node = temp_path_node
+			temp_path_node = temp_path_node.get_parent()
+		# Then we create the trees
+		left_tree: AVLTree = AVLTree(left_tree_nodes[0].get_left())
+		left_tree.join(tree2=AVLTree(node.get_left()), key=left_tree_nodes[0].get_key(),
+						val=left_tree_nodes[0].get_value())
+		right_tree: AVLTree = AVLTree(node.get_right())
+		right_tree.join(tree2=AVLTree(right_tree_nodes[0].get_right()), key=right_tree_nodes[0].get_key(),
+						val=right_tree_nodes[0].get_value())
+		for left_node in left_tree_nodes[1:]:
+			left_tree = AVLTree(left_node.get_left()).join(tree2=left_tree, key=left_node.get_key(),
+														   val=left_node.get_value())
+		for right_node in right_tree_nodes[1:]:
+			right_tree.join(tree2=AVLTree(right_node.get_right()), key=right_node.get_key(),
+							val=right_node.get_value())
+		trees_list = [left_tree, right_tree]
+		return trees_list
 
 	"""joins self with key and another AVLTree
 
@@ -652,7 +674,7 @@ class AVLTree(object):
 			self.make_the_connection_between_the_trees(subtree_of_taller_tree, middle_node, shorter_tree_root)
 
 	def get_pointer_to_lowest_key_subtree_with_specific_height(self, requested_height):
-		tmp_pointer = self.get_root
+		tmp_pointer = self.get_root()
 		while tmp_pointer.get_height() > requested_height:
 			tmp_pointer = tmp_pointer.get_left()
 		return tmp_pointer

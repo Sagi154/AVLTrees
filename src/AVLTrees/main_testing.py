@@ -32,12 +32,22 @@ def main():
     print(f"tree after inserting {node4} ")
     print(bst)
 
-    node = bst.search(17)
-    print(f"tree before deleting {node} ")
-    print(bst)
-    bst.delete(node)
-    print(f"tree after deleting {node} ")
-    print(bst)
+    node = bst.search(8)
+    print(node)
+    bst.split(node)
+    # node = bst.search(17)
+    # print(f"tree before deleting {node} ")
+    # print(bst)
+    # bst.delete(node)
+    # print(f"tree after deleting {node} ")
+    # print(bst)
+    #
+    # node2 = bst.search(6)
+    # print(f"tree before deleting {node2} ")
+    # print(bst)
+    # bst.delete(node2)
+    # print(f"tree after deleting {node2} ")
+    # print(bst)
 
 
 if __name__ == "__main__":
