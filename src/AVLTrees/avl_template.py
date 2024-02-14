@@ -689,14 +689,15 @@ class AVLTree(object):
 		bigger_tree_height = bigger_tree_root.get_height()
 
 		if smaller_tree_height > bigger_tree_height:
-			subtree_of_taller_tree_root = self.get_pointer_to_highest_key_subtree_with_specific_height(smaller_tree_root ,smaller_tree_height)
+			subtree_of_taller_tree_root = self.get_pointer_to_highest_key_subtree_with_specific_height(smaller_tree_root ,bigger_tree_height)
+
 			if not subtree_of_taller_tree_root.is_real_node():
 				subtree_of_taller_tree_root = subtree_of_taller_tree_root.get_parent()
 			self.connect_trees(subtree_of_taller_tree_root, middle_node, bigger_tree_root)
 			self.root = smaller_tree_root
 
 		elif smaller_tree_height < bigger_tree_height:
-			subtree_of_taller_tree_root = self.get_pointer_to_lowest_key_subtree_with_specific_height(bigger_tree_root, bigger_tree_root)
+			subtree_of_taller_tree_root = self.get_pointer_to_lowest_key_subtree_with_specific_height(bigger_tree_root, smaller_tree_height)
 			if not subtree_of_taller_tree_root.is_real_node():
 				subtree_of_taller_tree_root = subtree_of_taller_tree_root.get_parent()
 			self.connect_trees(subtree_of_taller_tree_root, middle_node, smaller_tree_root)
@@ -735,7 +736,7 @@ class AVLTree(object):
 
 		return tmp_pointer
 
-	def make_the_connection_between_the_trees(self,bigger_tree_root, middle_node, smaller_tree_root):
+	def make_the_connection_between_the_trees(self, bigger_tree_root, middle_node, smaller_tree_root):
 		middle_node.set_left(smaller_tree_root)
 		middle_node.set_right(bigger_tree_root)
 

@@ -41,6 +41,23 @@ def main():
     print(bst)
 
 
+    print("begin exp")
+    A = AVLTree(AVLNode(9 , "asd"))
+    B = AVLTree(AVLNode(19, "asd"))
+
+    B.insert(17, "asd")
+    B.insert(83, "asd")
+
+    print(A)
+    print(B)
+
+
+    A.join(B,13, "asd")
+
+    print(A)
+    print("the end is here")
+
+
     node = bst.search(9)
     print(node)
     lst = bst.split(node)
