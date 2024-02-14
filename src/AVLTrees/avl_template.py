@@ -466,7 +466,7 @@ class AVLTree(object):
 		:return: the number of rebalancing operation due to AVL rebalancing
 		"""
 		new_node = AVLNode(key, val)
-		if self.get_root() is None:
+		if self.get_root() is None or not self.get_root().is_real_node():
 			self.root = new_node
 			new_node.maintain_attributes()
 			return 0
@@ -618,23 +618,32 @@ class AVLTree(object):
 		print(f"left list {left_tree_nodes}")
 		print(f"right list {right_tree_nodes}")
 		# Then we create the trees
-		left_tree: AVLTree = AVLTree(left_tree_nodes[0])
-		print("before first join")
-		left_tree.join(tree2=AVLTree(node.get_left()), key=left_tree_nodes[0].get_key(),
-						val=left_tree_nodes[0].get_value())
+		left_tree: AVLTree = AVLTree(left_tree_nodes[0].get_left())
+		# TODO: Have to make sure join can accept a tree whose root is a virtual node
+		if not node.get_left().is_real_node():
+			left_tree.insert(left_tree_nodes[0].get_key(), left_tree_nodes[0].get_value())
+		else:
+			left_tree.join(tree2=AVLTree(node.get_left()), key=left_tree_nodes[0].get_key(),
+						   val=left_tree_nodes[0].get_value())
 		right_tree: AVLTree = AVLTree(right_tree_nodes[0].get_right())
-		right_tree.join(tree2=AVLTree(node.get_right()), key=right_tree_nodes[0].get_key(),
-						val=right_tree_nodes[0].get_value())
+		if not node.get_right().is_real_node():
+			right_tree.insert(right_tree_nodes[0].get_key(), right_tree_nodes[0].get_value())
+		else:
+			right_tree.join(tree2=AVLTree(node.get_right()), key=right_tree_nodes[0].get_key(),
+							val=right_tree_nodes[0].get_value())
+		print("---------first trees--------")
 		print(f"left_tree: {left_tree}")
-		for left_node in left_tree_nodes[1:]:
-			print(f"in for print {left_node}")
-			temp_left = AVLTree(left_node.get_left())
-			temp_left.join(tree2=AVLTree(left_node.get_left()), key=left_node.get_key(),
-														   val=left_node.get_value())
-			left_tree = temp_left
-		for right_node in right_tree_nodes[1:]:
-			right_tree = AVLTree(right_node.get_right()).join(tree2=right_tree, key=right_node.get_key(),
-															  val=right_node.get_value())
+		print(f"right_tree: {right_tree}")
+		for small_tree_node in left_tree_nodes[1:]:
+			left_tree.join(tree2=AVLTree(small_tree_node.get_left()), key=small_tree_node.get_key(),
+						   val=small_tree_node.get_value())
+		# temp_left = AVLTree(small_tree_node.get_left())
+		# temp_left.join(tree2=AVLTree(small_tree_node.get_left()), key=small_tree_node.get_key(),
+		# 											   val=small_tree_node.get_value())
+		# left_tree = temp_left
+		for big_tree_node in right_tree_nodes[1:]:
+			right_tree.join(tree2=AVLTree(big_tree_node.get_right()), key=big_tree_node.get_key(),
+							val=big_tree_node.get_value())
 		trees_list = [left_tree, right_tree]
 		return trees_list
 
