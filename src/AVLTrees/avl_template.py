@@ -736,6 +736,8 @@ class AVLTree(object):
 
 		return tmp_pointer
 
+	""
+
 	def make_the_connection_between_the_trees(self, bigger_tree_root, middle_node, smaller_tree_root):
 		middle_node.set_left(smaller_tree_root)
 		middle_node.set_right(bigger_tree_root)
