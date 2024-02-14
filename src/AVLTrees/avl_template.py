@@ -619,30 +619,40 @@ class AVLTree(object):
 		print(f"right list {right_tree_nodes}")
 		# Then we create the trees
 		left_tree: AVLTree = AVLTree(left_tree_nodes[0].get_left())
+		left_tree.get_root().disconnect_node_from_parent()
 		# TODO: Have to make sure join can accept a tree whose root is a virtual node
 		if not node.get_left().is_real_node():
 			left_tree.insert(left_tree_nodes[0].get_key(), left_tree_nodes[0].get_value())
 		else:
-			left_tree.join(tree2=AVLTree(node.get_left()), key=left_tree_nodes[0].get_key(),
+			sub_tree_left = node.get_left()
+			node.get_left().disconnect_node_from_parent()
+			left_tree.join(tree2=AVLTree(sub_tree_left), key=left_tree_nodes[0].get_key(),
 						   val=left_tree_nodes[0].get_value())
 		right_tree: AVLTree = AVLTree(right_tree_nodes[0].get_right())
+		right_tree.get_root().disconnect_node_from_parent()
 		if not node.get_right().is_real_node():
 			right_tree.insert(right_tree_nodes[0].get_key(), right_tree_nodes[0].get_value())
 		else:
-			right_tree.join(tree2=AVLTree(node.get_right()), key=right_tree_nodes[0].get_key(),
+			sub_tree_right = node.get_right()
+			node.get_right().disconnect_node_from_parent()
+			right_tree.join(tree2=AVLTree(sub_tree_right), key=right_tree_nodes[0].get_key(),
 							val=right_tree_nodes[0].get_value())
 		print("---------first trees--------")
 		print(f"left_tree: {left_tree}")
 		print(f"right_tree: {right_tree}")
 		for small_tree_node in left_tree_nodes[1:]:
-			left_tree.join(tree2=AVLTree(small_tree_node.get_left()), key=small_tree_node.get_key(),
+			sub_tree_left = small_tree_node.get_left()
+			small_tree_node.get_left().disconnect_node_from_parent()
+			left_tree.join(tree2=AVLTree(sub_tree_left), key=small_tree_node.get_key(),
 						   val=small_tree_node.get_value())
 		# temp_left = AVLTree(small_tree_node.get_left())
 		# temp_left.join(tree2=AVLTree(small_tree_node.get_left()), key=small_tree_node.get_key(),
 		# 											   val=small_tree_node.get_value())
 		# left_tree = temp_left
 		for big_tree_node in right_tree_nodes[1:]:
-			right_tree.join(tree2=AVLTree(big_tree_node.get_right()), key=big_tree_node.get_key(),
+			sub_tree_right = big_tree_node.get_right()
+			big_tree_node.get_right().disconnect_node_from_parent()
+			right_tree.join(tree2=AVLTree(sub_tree_right), key=big_tree_node.get_key(),
 							val=big_tree_node.get_value())
 		trees_list = [left_tree, right_tree]
 		return trees_list
