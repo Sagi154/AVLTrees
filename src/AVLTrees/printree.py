@@ -17,6 +17,7 @@ def trepr(t, bykey=False):
 		return ["#"]
 
 	thistr = f"key:{str(t.key)}, bf:{str(t.bf)}, height:{str(t.height)}, size:{str(t.size)}" if bykey else str(t.val)
+	# thistr = f"key:{str(t.key)}, height:{str(t.height)}" if bykey else str(t.val)
 
 	return conc(trepr(t.left, bykey), thistr, trepr(t.right, bykey))
 

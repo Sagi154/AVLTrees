@@ -7,20 +7,22 @@ from tqdm import tqdm
 
 from AVLTree import AVLTree
 
+from logs_config import set_log_config
+
 
 BULK_MODE = False
 
-NUM_OF_TESTS = 1000
-NUM_OF_STEPS = 512
+NUM_OF_TESTS = 20
+NUM_OF_STEPS = 5000
 
 MIN_KEY = 0
-MAX_KEY = 1000
+MAX_KEY = 6000
 
 step_weights = {
-    "insert": (8, 30),
+    "insert": (16, 30),
     "delete": (8, 30),
-    "split": (2, 8),
-    "join": (3, 8),
+    "split": (2, 4),
+    "join": (1, 4),
 }
 
 RESULT_FILE_PATH = Path.home() / "avl_tester_results.json"
@@ -38,6 +40,7 @@ class TestFailedException(Exception):
 
 
 def run():
+    set_log_config()
     prev_steps = []
     try:
         with open(RESULT_FILE_PATH, "r") as result_file:

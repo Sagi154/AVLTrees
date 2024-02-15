@@ -143,8 +143,6 @@ class AVLNode(object):
 		return not self.get_left().is_real_node() and not self.get_right().is_real_node()
 
 	def disconnect_node_from_parent(self):
-		# TODO: make sure to handle case where parent is None
-
 		parent = self.get_parent()
 		self.set_parent(None)
 		if parent is not None:
@@ -271,8 +269,11 @@ class AVLTree(object):
 		"""
 		prev_top_parent = prev_top.get_parent()
 		switched_sub_tree = new_top.get_right()
-		new_top.set_right(prev_top)
 
+		if switched_sub_tree is None:
+			logging.warning(f"\n switched is None")
+
+		new_top.set_right(prev_top)
 		new_top.set_parent(prev_top_parent)
 		prev_top.set_parent(new_top)
 		prev_top.set_left(switched_sub_tree)
@@ -290,6 +291,10 @@ class AVLTree(object):
 		"""
 		prev_top_parent = prev_top.get_parent()
 		switched_sub_tree = new_top.get_left()
+
+		if switched_sub_tree is None:
+			logging.warning(f"\n switched is None")
+
 		new_top.set_left(prev_top)
 		new_top.set_parent(prev_top_parent)
 		prev_top.set_parent(new_top)
@@ -299,39 +304,6 @@ class AVLTree(object):
 		prev_top.maintain_attributes()
 		new_top.maintain_attributes()
 		logging.debug(f"tree post left rotation with prev_top = {prev_top} and new_top = {new_top}")
-
-	def maintain_attributes(self, node):
-		"""
-		Calculate and update the height, size and the balance factor of node.
-		@param node: a node.
-		"""
-		node.set_height(1 + max(node.get_left.get_height(), node.get_right.get_height()))
-		node.set_size(1 + node.get_left.get_size() + node.get_right.get_size())
-		node.set_balance_factor()
-
-	def balance(self, node):
-		"""
-		check if the subtree is balanced and if not rotate him
-		@param node:
-		@return: the number of rotations needed to balance the tree
-		"""
-		node.set_balance_factor()
-		num_of_rotates = 0
-		if node.get_balance_factor() == -2:
-			num_of_rotates += 1
-			if node.get_right().get_balance_factor() > 0:
-				num_of_rotates += 1
-				node.get_right().rotate_right(node.get_right(), node.get_right().get_left())
-			node.rotate_left(node, node.get_right())
-		elif node.get_balance_factor() == 2:
-			num_of_rotates += 1
-			if node.left().get_balance_factor() < 0:
-				num_of_rotates += 1
-				node.get_left().rotate_left(node.get_left(), node.get_left().get_right())
-			node.rotate_right(node, node.get_left())
-		else:
-			node.maintain_attributes()
-		return num_of_rotates
 
 	def perform_balance_rotations(self, pointer: AVLNode) -> int:
 		"""
@@ -374,17 +346,14 @@ class AVLTree(object):
 		"""
 		balance_ops = 0
 		while pointer is not None:
-			if pointer.get_left() == None or pointer.get_right() == None:
-				print(f"tree is {self}")
-				print(f"the pointer is {pointer}")
-				print(f"parent is {pointer.get_parent()}")
-				print(f"the left child is {pointer.get_left()}")
-				print(f"the right child is {pointer.get_right()}")
-				print(f"search for nodes {self.search(950)}")
+			# if pointer.get_left() == None or pointer.get_right() == None:
+			# 	# print(f"tree is {self}")
+			# 	# print(f"the pointer is {pointer}")
+			# 	# print(f"parent is {pointer.get_parent()}")
+			# 	# print(f"the left child is {pointer.get_left()}")
+			# 	# print(f"the right child is {pointer.get_right()}")
 			prev_pointer_height = pointer.get_height()
 			pointer.maintain_attributes()
-			logging.debug("in maintain tree balance")
-			logging.debug(f"pointer is{pointer}")
 			bf = pointer.get_balance_factor()
 			next_pointer = pointer.get_parent()
 			if abs(bf) < 2 and prev_pointer_height == pointer.get_height():
@@ -393,38 +362,8 @@ class AVLTree(object):
 				balance_ops += 1
 			elif abs(bf) == 2:
 				balance_ops += self.perform_balance_rotations(pointer)
-			logging.debug(f"pointer after rotations is{pointer}")
 			pointer = next_pointer
 		return balance_ops
-
-	def check_balance_and_maintain_upwards(self, pointer):
-		"""
-		Going upwards from the parent of the inserted/ deleted node to the root and checking if each node's subtree in
-		the route is balanced. If not it balance it and update the balance factory, height and size. If the subtree is
-		balanced it only update the balance factory, height and size.
-		The method also calculate the number of rotations needed to balance all the subtrees in the route and return
-		and return it.
-		@param pointer: The parent of the inserted/ deleted node
-		@return: the number of rotations needed to balance all the subtrees in the route from the inserted/ deleted node
-		to the root
-		"""
-		not_balanced = True
-		num_of_rotates = 0
-
-		while pointer is not None:
-			pointer_height = pointer.get_height()
-			pointer.maintain_attributes()
-			if not_balanced:
-				if abs(pointer.get_balance_factor()) < 2:
-					if pointer_height == pointer.get_height():
-						not_balanced = False
-					else:
-						pass
-				else:
-					num_of_rotates += self.balance(pointer)
-
-			pointer = pointer.get_parent()
-		return num_of_rotates
 
 	def tree_position(self, new_node_key):
 		"""
@@ -450,6 +389,8 @@ class AVLTree(object):
 		:return: the AVLNode corresponding to key or None if key is not found.
 		"""
 		temp_node = self.root
+		if temp_node is None:
+			return None
 		while temp_node.is_real_node():
 			if key == temp_node.key:
 				return temp_node
@@ -478,22 +419,8 @@ class AVLTree(object):
 		else:
 			node_parent.set_left(new_node)
 		new_node.maintain_attributes()
-		# self.update_attributes(node_parent)
-		logging.debug("Tree before balancing")
-		logging.debug(f"\n{self}")
 		return self.maintain_tree_balance(node_parent)
 		# return self.check_balance_and_maintain_upwards(node_parent)
-
-	def update_attributes(self, pointer):
-		"""
-		Used for testing
-		:param pointer:
-		:return:
-		"""
-		pointer.maintain_attributes()
-		while pointer is not None:
-			pointer.maintain_attributes()
-			pointer = pointer.get_parent()
 
 	def delete(self, node: AVLNode) -> int:
 		"""
@@ -535,15 +462,16 @@ class AVLTree(object):
 			else:
 				parent.set_right(child)
 		node.set_parent(None)
-		node.set_left(None)
-		node.set_right(None)
+		node.set_left(AVLNode(None, None))
+		node.set_right(AVLNode(None, None))
 
 	def bst_delete_has_twins(self, node: AVLNode) -> AVLNode:
 		# Find node successor
 		node_succ = AVLTree.successor(node)
 		# His parent is the parent of the physically deleted node.
 		parent = node_succ.get_parent()
-
+		if parent == node:
+			parent = node_succ
 		# Remove node_succ from the tree
 		if node_succ.is_node_leaf():
 			node_succ.disconnect_node_from_parent()
@@ -553,7 +481,6 @@ class AVLTree(object):
 		if self.root == node:
 			self.root = node_succ
 			node_succ.set_parent(None)
-			parent = None
 		else:
 			node_parent = node.get_parent()
 			node_succ.set_parent(node_parent)
@@ -561,6 +488,7 @@ class AVLTree(object):
 				node_parent.set_right(node_succ)
 			else:
 				node_parent.set_left(node_succ)
+		# Set parent of sons after switch
 		node_succ.set_left(node.get_left())
 		if node.get_left().is_real_node():
 			node.get_left().set_parent(node_succ)
@@ -568,8 +496,8 @@ class AVLTree(object):
 		if node.get_right().is_real_node():
 			node.get_right().set_parent(node_succ)
 		node.set_parent(None)
-		node.set_left(None)
-		node.set_right(None)
+		node.set_left(AVLNode(None, None))
+		node.set_right(AVLNode(None, None))
 		return parent
 
 
@@ -579,6 +507,9 @@ class AVLTree(object):
 		:param node: The node we want to delete.
 		:return: Parent of the physically deleted node.
 		"""
+		# print(f"Deleting node {node}")
+		# print(f"parent - {node.get_parent()}, left - {node.get_left()}, right - {node.get_right()}")
+		# print(f"delete, tree is {self}")
 		parent = node.get_parent()
 		# First we handle node is leaf.
 		if node.is_node_leaf():
@@ -631,7 +562,6 @@ class AVLTree(object):
 		dictionary smaller than node.key, right is an AVLTree representing the keys in the
 		dictionary larger than node.key.
 		"""
-		print(self)
 		left_tree_nodes: list[AVLNode] = []
 		right_tree_nodes: list[AVLNode] = []
 		prev_path_node = node
@@ -644,8 +574,6 @@ class AVLTree(object):
 				right_tree_nodes.append(temp_path_node)
 			prev_path_node = temp_path_node
 			temp_path_node = temp_path_node.get_parent()
-		print(f"left list {left_tree_nodes}")
-		print(f"right list {right_tree_nodes}")
 		# Then we create the first subtrees
 		left_tree = AVLTree(node.get_left())
 		if node.get_left().is_real_node():
@@ -653,26 +581,6 @@ class AVLTree(object):
 		right_tree = AVLTree(node.get_right())
 		if node.get_right().is_real_node():
 			node.get_right().disconnect_node_from_parent()
-		# # Create the first
-		# left_tree: AVLTree = AVLTree(left_tree_nodes[0].get_left())
-		# if left_tree.get_root().is_real_node():
-		# 	left_tree.get_root().disconnect_node_from_parent()
-		# if not node.get_left().is_real_node():
-		# 	left_tree.insert(left_tree_nodes[0].get_key(), left_tree_nodes[0].get_value())
-		# else:
-		# 	sub_tree_left = node.get_left()
-		# 	node.get_left().disconnect_node_from_parent()
-		# 	left_tree.join(tree2=AVLTree(sub_tree_left), key=left_tree_nodes[0].get_key(),
-		# 				   val=left_tree_nodes[0].get_value())
-		# right_tree: AVLTree = AVLTree(right_tree_nodes[0].get_right())
-		# right_tree.get_root().disconnect_node_from_parent()
-		# if not node.get_right().is_real_node():
-		# 	right_tree.insert(right_tree_nodes[0].get_key(), right_tree_nodes[0].get_value())
-		# else:
-		# 	sub_tree_right = node.get_right()
-		# 	node.get_right().disconnect_node_from_parent()
-		# 	right_tree.join(tree2=AVLTree(sub_tree_right), key=right_tree_nodes[0].get_key(),
-		# 					val=right_tree_nodes[0].get_value())
 		# Create the rest of T1
 		for small_tree_node in left_tree_nodes[0:]:
 			sub_tree_left = small_tree_node.get_left()
@@ -688,40 +596,28 @@ class AVLTree(object):
 		trees_list = [left_tree, right_tree]
 		return trees_list
 
-	"""joins self with key and another AVLTree
-
-	@type tree2: AVLTree 
-	@param tree2: a dictionary to be joined with self
-	@type key: int 
-	@param key: The key separting self with tree2
-	@type val: any 
-	@param val: The value attached to key
-	@pre: all keys in self are smaller than key and all keys in tree2 are larger than key
-	@rtype: int
-	@returns: the absolute value of the difference between the height of the AVL trees joined
-	"""
-
-	def join(self, tree2, key, val):
-		print(f"------call for join--------")
-		print(f"self is {self} and parent {self.get_root().get_parent()}")
-		print(f"node is: key = {key}, val = {val}")
-		print(f"tree2 is {tree2} and parent {tree2.get_root().get_parent()}")
+	def join(self, tree2: AVLTree, key: int, val) -> int:
+		"""
+		joins self with key and another AVLTree
+		@pre: all keys in self are smaller than key and all keys in tree2 are larger than key
+		:param tree2: a dictionary to be joined with self
+		:param key: The key separating self with tree2
+		:param val: The value attached to key
+		:return: the absolute value of the difference between the height of the AVL trees joined
+		"""
 		# checking special cases (one or both trees are None)
 		if (tree2.get_root() is None) or (not tree2.get_root().is_real_node()):
 			if (self.get_root() is None) or (not self.get_root().is_real_node()):
 				new_root = AVLNode(key, val)
 				self.root = new_root
-				print(f"tree after join {self}")
 				return 1
 			else:
 				self.insert(key=key, val=val)
-				print(f"tree after join {self}")
 				return 1 + self.get_root().get_height()
 		elif (self.get_root() is None) or (not self.get_root().is_real_node()):
 			prev_tree2_height = tree2.get_root().get_height()
 			tree2.insert(key=key, val=val)
 			self.root = tree2.get_root()
-			print(f"tree after join {self}")
 			return 1 + prev_tree2_height
 
 		# both trees have root
@@ -733,11 +629,9 @@ class AVLTree(object):
 
 			# find out which tree is with bigger keys
 			if self.get_root().get_key() > middle_node.get_key():
-				# TODO: problem of current test is here
 				self.choose_order_and_connect(tree2.get_root(), middle_node, self.get_root())
 			else:
 				self.choose_order_and_connect(self.get_root(), middle_node, tree2.get_root())
-			print(f"tree after join {self}")
 			return 1 + abs(heights_difference)
 
 
@@ -785,13 +679,6 @@ class AVLTree(object):
 
 		self.maintain_tree_balance(middle_node)
 
-	#def connect_trees1(self, subtree_of_taller_tree, middle_node, shorter_tree_root):
-	#	print(f"subtree {subtree_of_taller_tree}")
-	#	if subtree_of_taller_tree.get_key() < middle_node.get_key():
-	#		self.make_the_connection_between_the_trees(shorter_tree_root, middle_node, subtree_of_taller_tree)
-	#	else:
-	#		self.make_the_connection_between_the_trees(subtree_of_taller_tree, middle_node, shorter_tree_root)
-
 	def get_pointer_to_appropriate_subtree_with_specific_height(self, tree_root, requested_height, smaller):
 		# complexity analysis: the method going down to a leaf, by that it does at most log(n) actions, every action cost
 		# O(1) and hence the complexity is O(log(n))
@@ -837,6 +724,9 @@ class AVLTree(object):
 		@param bigger_tree_root: the root of the tree from the given trees in join with bigger keys
 		@return:
 		"""
+		# problem might be here if smaller_tree_root or bigger_tree_root are None
+		if smaller_tree_root is None or bigger_tree_root is None:
+			logging.warning("----------- assigning None to sons-------------")
 		middle_node.set_left(smaller_tree_root)
 		middle_node.set_right(bigger_tree_root)
 
