@@ -7,4 +7,4 @@ def set_log_config():
                         encoding='utf-8',
                         handlers=[logging.FileHandler("my_logs.log"),
                                   logging.StreamHandler()],
-                        level=logging.WARNING)
+                        level=logging.INFO)

@@ -207,13 +207,17 @@ class AVLTree(object):
 	A class implementing the ADT Dictionary, using an AVL tree.
 	"""
 
-	def __init__(self, root: AVLNode):
+	def __init__(self):
 		"""
 		Constructor, you are allowed to add more fields.
 
 		"""
-		self.root = root
+		self.root = None
 		self.tree_array = []
+
+	# def __init__(self, node: AVLNode):
+	# 	self.root = node
+	# 	self.tree_array = []
 
 	def __repr__(self):  # no need to understand the implementation of this one
 		out = ""
@@ -317,20 +321,24 @@ class AVLTree(object):
 			right_child = pointer.get_right()
 			if right_child.get_balance_factor() == 1:
 				self.rotate_right(prev_top=right_child, new_top=right_child.get_left())
+				logging.info(f"\n Performing right rotation of prev_top:{right_child} and new_top:{right_child.get_left()}")
 				rotations = 2
-				# right_child = right_child.get_left()
 				right_child = pointer.get_right()
 			self.rotate_left(prev_top=pointer, new_top=right_child)
+			logging.info(f"\n Performing left rotation of prev_top:{pointer} and new_top:{right_child}")
+
 			if self.root == pointer:
 				self.root = right_child
 		elif node_bf == 2:
 			left_child = pointer.get_left()
 			if left_child.get_balance_factor() == -1:
 				self.rotate_left(prev_top=left_child, new_top=left_child.get_right())
+				logging.info(f"\n Performing left rotation of prev_top:{left_child} and new_top:{left_child.get_right()}")
 				rotations = 2
-				# left_child = left_child.get_right()
 				left_child = pointer.get_left()
 			self.rotate_right(prev_top=pointer, new_top=left_child)
+			logging.info(f"\n Performing right rotation of prev_top:{pointer} and new_top:{left_child}")
+
 			if self.root == pointer:
 				self.root = left_child
 		return rotations
@@ -346,12 +354,6 @@ class AVLTree(object):
 		"""
 		balance_ops = 0
 		while pointer is not None:
-			# if pointer.get_left() == None or pointer.get_right() == None:
-			# 	# print(f"tree is {self}")
-			# 	# print(f"the pointer is {pointer}")
-			# 	# print(f"parent is {pointer.get_parent()}")
-			# 	# print(f"the left child is {pointer.get_left()}")
-			# 	# print(f"the right child is {pointer.get_right()}")
 			prev_pointer_height = pointer.get_height()
 			pointer.maintain_attributes()
 			bf = pointer.get_balance_factor()
@@ -359,14 +361,12 @@ class AVLTree(object):
 			if abs(bf) < 2 and prev_pointer_height == pointer.get_height():
 				pass
 			elif abs(bf) < 2 and prev_pointer_height != pointer.get_height():
+				logging.info(f"\n Height changed for pointer: {pointer}, prev_height: {prev_pointer_height}")
 				balance_ops += 1
 			elif abs(bf) == 2:
+				logging.info(f"\n About to perform rotations for pointer {pointer}")
 				balance_ops += self.perform_balance_rotations(pointer)
 			pointer = next_pointer
-		# If reached break, Keep going to root so size can be maintained.
-		# if pointer is not None and pointer.get_parent() is not None:
-		# 	pointer = pointer.get_parent()
-		# 	pointer.maintain_attributes()
 		return balance_ops
 
 	def tree_position(self, new_node_key):
@@ -579,23 +579,28 @@ class AVLTree(object):
 			prev_path_node = temp_path_node
 			temp_path_node = temp_path_node.get_parent()
 		# Then we create the first subtrees
-		left_tree = AVLTree(node.get_left())
+		left_tree = AVLTree()
+		left_tree.root = node.get_left()
+		# left_tree = AVLTree(node.get_left())
 		if node.get_left().is_real_node():
 			node.get_left().disconnect_node_from_parent()
-		right_tree = AVLTree(node.get_right())
+		right_tree = AVLTree()
+		right_tree.root = node.get_right()
 		if node.get_right().is_real_node():
 			node.get_right().disconnect_node_from_parent()
 		# Create the rest of T1
 		for small_tree_node in left_tree_nodes[0:]:
-			sub_tree_left = small_tree_node.get_left()
+			sub_tree_left = AVLTree()
+			sub_tree_left.root = small_tree_node.get_left()
 			small_tree_node.get_left().disconnect_node_from_parent()
-			left_tree.join(tree2=AVLTree(sub_tree_left), key=small_tree_node.get_key(),
+			left_tree.join(tree2=sub_tree_left, key=small_tree_node.get_key(),
 						   val=small_tree_node.get_value())
 		# Create the rest of T2
 		for big_tree_node in right_tree_nodes[0:]:
-			sub_tree_right = big_tree_node.get_right()
+			sub_tree_right = AVLTree()
+			sub_tree_right.root = big_tree_node.get_right()
 			big_tree_node.get_right().disconnect_node_from_parent()
-			right_tree.join(tree2=AVLTree(sub_tree_right), key=big_tree_node.get_key(),
+			right_tree.join(tree2=sub_tree_right, key=big_tree_node.get_key(),
 							val=big_tree_node.get_value())
 		trees_list = [left_tree, right_tree]
 		return trees_list

@@ -12,11 +12,11 @@ from logs_config import set_log_config
 
 BULK_MODE = False
 
-NUM_OF_TESTS = 20
-NUM_OF_STEPS = 5000
+NUM_OF_TESTS = 1000
+NUM_OF_STEPS = 256
 
 MIN_KEY = 0
-MAX_KEY = 6000
+MAX_KEY = 300
 
 step_weights = {
     "insert": (16, 30),
@@ -116,7 +116,7 @@ class Test:
 
     def __init__(self):
         self.key_lists = [list()]
-        self.trees = [AVLTree(None)]
+        self.trees = [AVLTree()]
         self.step_weights = self._generate_weights()
 
     def _generate_weights(self):
