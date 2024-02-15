@@ -581,7 +581,6 @@ class AVLTree(object):
 		# Then we create the first subtrees
 		left_tree = AVLTree()
 		left_tree.root = node.get_left()
-		# left_tree = AVLTree(node.get_left())
 		if node.get_left().is_real_node():
 			node.get_left().disconnect_node_from_parent()
 		right_tree = AVLTree()
@@ -590,11 +589,18 @@ class AVLTree(object):
 			node.get_right().disconnect_node_from_parent()
 		# Create the rest of T1
 		for small_tree_node in left_tree_nodes[0:]:
+			logging.warning(f"\n left tree before join {left_tree}")
+			logging.warning(f"\n small_tree_node: {small_tree_node}")
 			sub_tree_left = AVLTree()
 			sub_tree_left.root = small_tree_node.get_left()
 			small_tree_node.get_left().disconnect_node_from_parent()
-			left_tree.join(tree2=sub_tree_left, key=small_tree_node.get_key(),
-						   val=small_tree_node.get_value())
+			logging.warning(f"\n sub_tree_left: {sub_tree_left}")
+			sub_tree_left.join(tree2=left_tree, key=small_tree_node.get_key(),
+							   val=small_tree_node.get_value())
+			left_tree = sub_tree_left
+			logging.warning(f"\n left tree after join {left_tree}")
+			# left_tree.join(tree2=sub_tree_left, key=small_tree_node.get_key(),
+			# 			   val=small_tree_node.get_value())
 		# Create the rest of T2
 		for big_tree_node in right_tree_nodes[0:]:
 			sub_tree_right = AVLTree()

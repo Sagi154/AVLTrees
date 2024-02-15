@@ -57,11 +57,65 @@ def test():
     rotations = tree.delete(node)
     logging.info(f"\n deleted 6, rotations: {rotations} \n tree is \n {tree}")
 
+def test_join():
+    logging.warning(f"\n Testing join")
+    tree1 = AVLTree()
+    tree2 = AVLTree()
+
+    tree1.insert(2, 0)
+    tree1.insert(6, 0)
+    tree1.insert(4, 0)
+    tree1.insert(3, 0)
+    tree1.insert(9, 0)
+    node = tree1.search(9)
+    logging.warning(f"\n test successor for node 9 {tree1.successor(node)}")
+    node = (20, 0)
+    tree2.insert(24, 0)
+    tree2.insert(29, 0)
+    tree2.insert(25, 0)
+    tree2.insert(22, 0)
+    tree2.insert(21, 0)
+    tree2.insert(39, 0)
+    tree2.insert(41, 0)
+    tree2.insert(31, 0)
+    tree2.insert(27, 0)
+    logging.warning(f"\n first tree is {tree1}")
+    logging.warning(f"\n second tree is {tree2}")
+    logging.warning(f"\n join cost is {tree1.join(tree2, *node)} and tree is \n {tree1}")
+
+def test_split():
+    tree = AVLTree()
+    tree.insert(25, 0)
+    tree.insert(9, 0)
+    tree.insert(33, 0)
+
+    tree.insert(5, 0)
+    tree.insert(13, 0)
+    tree.insert(29, 0)
+    tree.insert(59, 0)
+
+    tree.insert(2, 0)
+    tree.insert(11, 0)
+    tree.insert(20, 0)
+    tree.insert(31, 0)
+
+    tree.insert(10, 0)
+    tree.insert(18, 0)
+    tree.insert(23, 0)
+    logging.warning(f"\n tree test for split is {tree}")
+    node = tree.search(23)
+    left, right = tree.split(node)
+    logging.warning(f"left tree is \n {left} \n right tree is \n {right}")
+    logging.warning(f"left root is {left.get_root()} \n right root is {right.get_root()}")
+
+
 
 def main():
     set_log_config()
     # random_test(200)
-    determined_test(30)
+    # test_join()
+    test_split()
+    # determined_test(30)
     # determined_test(1000)
     # test()
 
