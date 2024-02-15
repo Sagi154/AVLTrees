@@ -363,6 +363,10 @@ class AVLTree(object):
 			elif abs(bf) == 2:
 				balance_ops += self.perform_balance_rotations(pointer)
 			pointer = next_pointer
+		# If reached break, Keep going to root so size can be maintained.
+		if pointer is not None and pointer.get_parent() is not None:
+			pointer = pointer.get_parent()
+			pointer.maintain_attributes()
 		return balance_ops
 
 	def tree_position(self, new_node_key):

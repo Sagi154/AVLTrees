@@ -27,6 +27,7 @@ def random_test():
         #     print(AVLTree(node))
         node = node.get_right()
 
+
 def determined_test(keys_count: int):
     print(f"---------called for determined test with {keys_count}-----")
     NUMBER_OF_KEYS = keys_count
@@ -35,16 +36,15 @@ def determined_test(keys_count: int):
         bst.insert(i, 0)
     root = bst.get_root()
     print(root)
-    print(bst)
-
+    # print(bst)
 
 
 def main():
     set_log_config()
     # random_test()
     # determined_test(25)
-    determined_test(1024)
-    determined_test(1023)
+    determined_test(17)
+    determined_test(100)
 
     # print("----------Test join seperately---------")
     # bst2 = AVLTree(None)
