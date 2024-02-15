@@ -780,7 +780,7 @@ class AVLTree(object):
 				self.root = bigger_tree_root
 
 		else:
-			self.connect_trees(smaller_tree_root, middle_node, bigger_tree_root)
+			self.connect_trees(bigger_tree_root, middle_node, smaller_tree_root)
 			self.root = middle_node
 
 		self.maintain_tree_balance(middle_node)
