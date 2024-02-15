@@ -763,13 +763,21 @@ class AVLTree(object):
 			subtree_of_taller_tree_root = (self.get_pointer_to_appropriate_subtree_with_specific_height
 										   (smaller_tree_root,bigger_tree_height, True))
 			self.connect_trees(bigger_tree_root, middle_node, subtree_of_taller_tree_root)
-			self.root = smaller_tree_root
+
+			if subtree_of_taller_tree_root == smaller_tree_root :
+				self.root = middle_node
+			else:
+				self.root = smaller_tree_root
 
 		elif smaller_tree_height < bigger_tree_height:
 			subtree_of_taller_tree_root = (self.get_pointer_to_appropriate_subtree_with_specific_height
 										   (bigger_tree_root, smaller_tree_height, False))
 			self.connect_trees(subtree_of_taller_tree_root, middle_node, smaller_tree_root)
-			self.root = bigger_tree_root
+
+			if subtree_of_taller_tree_root == bigger_tree_root :
+				self.root = middle_node
+			else:
+				self.root = bigger_tree_root
 
 		else:
 			self.connect_trees(smaller_tree_root, middle_node, bigger_tree_root)
@@ -806,12 +814,13 @@ class AVLTree(object):
 		subtree is the biggest node with this height in the taller tree. if the node isn't real, the method return his father
 		"""
 		tmp_pointer = tree_root
+
 		if not smaller:
-			while tmp_pointer.get_height() > requested_height and tmp_pointer.get_left() is not None:
+			while tmp_pointer.get_height() > requested_height and tmp_pointer.get_left().is_real_node():
 				tmp_pointer = tmp_pointer.get_left()
 
 		else:
-			while tmp_pointer.get_height() > requested_height and tmp_pointer.get_right() is not None:
+			while tmp_pointer.get_height() > requested_height and tmp_pointer.get_right().is_real_node():
 				tmp_pointer = tmp_pointer.get_right()
 
 		if not tmp_pointer.is_real_node():
