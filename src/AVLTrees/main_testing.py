@@ -44,7 +44,7 @@ def main():
     # random_test()
     # determined_test(25)
     determined_test(17)
-    determined_test(100)
+    determined_test(1000000)
 
     # print("----------Test join seperately---------")
     # bst2 = AVLTree(None)
