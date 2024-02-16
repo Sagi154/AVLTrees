@@ -28,7 +28,7 @@ def random_test(keys_count: int):
         node = node.get_right()
 
 
-def determined_test(keys_count: int):
+def determined_test(keys_count: int) -> AVLTree:
     print(f"---------called for determined test with {keys_count}-----")
     NUMBER_OF_KEYS = keys_count
     bst = AVLTree()
@@ -38,7 +38,7 @@ def determined_test(keys_count: int):
         logging.info(f"\n inserted {i}, rotations: {b_ops} \n tree is \n {bst}")
     root = bst.get_root()
     print(root)
-    # print(bst)
+    return bst
 
 def test():
     tree = AVLTree()
@@ -105,31 +105,20 @@ def test_split():
     logging.warning(f"\n tree test for split is {tree}")
     node = tree.search(23)
     left, right = tree.split(node)
-    logging.warning(f"left tree is \n {left} \n right tree is \n {right}")
-    logging.warning(f"left root is {left.get_root()} \n right root is {right.get_root()}")
+    logging.warning(f"\n left tree is \n {left} \n right tree is \n {right}")
+    logging.warning(f"\n left root is {left.get_root()} \n right root is {right.get_root()}")
 
 
 
 def main():
     set_log_config()
     # random_test(200)
-    # test_join()
-    test_split()
-    # determined_test(30)
+    test_join()
+    # test_split()
+    # tree = determined_test(30)
+    # print(tree.avl_to_array())
     # determined_test(1000)
     # test()
-
-    # print("----------Test join seperately---------")
-    # bst2 = AVLTree(None)
-    # bst2.insert(250, 0)
-    # node = 200, 0
-    # tree2 = AVLTree(None)
-    # tree2.insert(130, 0)
-    # tree2.insert(45, 0)
-    # print(f"bst2 is {bst2}")
-    # print(f"node is: {node}")
-    # print(f"tree2 is {tree2}")
-    # bst2.join(tree2, *node)
 
 
 if __name__ == "__main__":
