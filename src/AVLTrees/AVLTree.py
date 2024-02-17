@@ -223,7 +223,7 @@ class AVLTree(object):
 		Constructor, you are allowed to add more fields.
 
 		"""
-		self.root = None
+		self.root = AVLNode(None, None)
 		self.tree_array = []
 
 	def __repr__(self):
@@ -641,6 +641,7 @@ class AVLTree(object):
 		else:
 			node_parent = node.get_parent()
 			node_succ.set_parent(node_parent)
+			node_succ.set_height(node.get_height())
 			if node_parent.get_right() == node:
 				node_parent.set_right(node_succ)
 			else:

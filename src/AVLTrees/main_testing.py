@@ -108,12 +108,21 @@ def test_split():
     logging.warning(f"\n left tree is \n {left} \n right tree is \n {right}")
     logging.warning(f"\n left root is {left.get_root()} \n right root is {right.get_root()}")
 
-
+def test_ops_count_from_forum():
+    tree = AVLTree()
+    arr = [15, 22, 8, 24, 4, 20, 11, 18, 9, 12, 2, 13]
+    for k in arr:
+        tree.insert(k, 0)
+    print(tree)
+    node = tree.search(11)
+    print(tree.delete(node))
+    print(tree)
 
 def main():
     set_log_config()
     # random_test(200)
-    test_join()
+    # test_join()
+    test_ops_count_from_forum()
     # test_split()
     # tree = determined_test(30)
     # print(tree.avl_to_array())

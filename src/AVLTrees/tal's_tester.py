@@ -10,13 +10,13 @@ from AVLTree import AVLTree
 from logs_config import set_log_config
 
 
-BULK_MODE = False
+BULK_MODE = True
 
-NUM_OF_TESTS = 1000
-NUM_OF_STEPS = 256
+NUM_OF_TESTS = 2000
+NUM_OF_STEPS = 5000
 
 MIN_KEY = 0
-MAX_KEY = 300
+MAX_KEY = 5200
 
 step_weights = {
     "insert": (16, 30),
