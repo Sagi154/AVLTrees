@@ -26,6 +26,7 @@ def random_test(keys_count: int):
         # if node.get_size() < 50:
         #     print(AVLTree(node))
         node = node.get_right()
+    return bst
 
 
 def determined_test(keys_count: int) -> AVLTree:
@@ -120,11 +121,12 @@ def test_ops_count_from_forum():
 
 def main():
     set_log_config()
-    # random_test(200)
+    tree = random_test(25)
     # test_join()
-    test_ops_count_from_forum()
+    # test_ops_count_from_forum()
     # test_split()
     # tree = determined_test(30)
+    print(tree)
     # print(tree.avl_to_array())
     # determined_test(1000)
     # test()

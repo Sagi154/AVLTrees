@@ -47,6 +47,8 @@ class AVLNode(object):
 	def get_left(self) -> AVLNode | None:
 		"""
 		returns the left child.
+		\n
+		Complexity: O(1).
 		:return: the left child of self, None if there is no left child (if self is virtual)
 		"""
 		return self.left
@@ -54,6 +56,8 @@ class AVLNode(object):
 	def get_right(self) -> AVLNode | None:
 		"""
 		returns the right child.
+		\n
+		Complexity: O(1).
 		:return: the right child of self, None if there is no right child (if self is virtual)
 		"""
 		return self.right
@@ -61,6 +65,8 @@ class AVLNode(object):
 	def get_parent(self) -> AVLNode | None:
 		"""
 		returns the parent.
+		\n
+		Complexity: O(1).
 		:return: the parent of self, None if there is no parent.
 		"""
 		return self.parent
@@ -68,6 +74,8 @@ class AVLNode(object):
 	def get_key(self) -> int | None:
 		"""
 		returns the key.
+		\n
+		Complexity: O(1).
 		:return: the key of self, None if the node is virtual.
 		"""
 		return self.key
@@ -75,6 +83,8 @@ class AVLNode(object):
 	def get_value(self):
 		"""
 		returns the value.
+		\n
+		Complexity: O(1).
 		:return: the value of self, None if the node is virtual.
 		"""
 		return self.value
@@ -82,6 +92,8 @@ class AVLNode(object):
 	def get_height(self) -> int:
 		"""
 		returns the height.
+		\n
+		Complexity: O(1).
 		:return: the height of self, -1 if the node is virtual.
 		"""
 		return self.height
@@ -89,6 +101,8 @@ class AVLNode(object):
 	def set_left(self, node: AVLNode | None):
 		"""
 		sets left child.
+		\n
+		Complexity: O(1).
 		:param node: a node.
 		"""
 		self.left = node
@@ -96,6 +110,8 @@ class AVLNode(object):
 	def set_right(self, node: AVLNode | None):
 		"""
 		sets right child.
+		\n
+		Complexity: O(1).
 		:param node: a node.
 		"""
 		self.right = node
@@ -103,6 +119,8 @@ class AVLNode(object):
 	def set_parent(self, node: AVLNode | None):
 		"""
 		sets parent.
+		\n
+		Complexity: O(1).
 		:param node: a node.
 		"""
 		self.parent = node
@@ -110,6 +128,8 @@ class AVLNode(object):
 	def set_key(self, key: int | None):
 		"""
 		Sets key.
+		\n
+		Complexity: O(1).
 		:param key: key
 		"""
 		self.key = key
@@ -117,6 +137,8 @@ class AVLNode(object):
 	def set_value(self, value):
 		"""
 		Sets value.
+		\n
+		Complexity: O(1).
 		:param value: data
 		"""
 		self.value = value
@@ -124,13 +146,17 @@ class AVLNode(object):
 	def set_height(self, h: int):
 		"""
 		sets the height of the node.
+		\n
+		Complexity: O(1).
 		:param h: the height of the node.
 		"""
 		self.height = h
 
 	def is_real_node(self) -> bool:
 		"""
-		returns whether self is not a virtual node
+		returns whether self is not a virtual node.
+		\n
+		Complexity: O(1).
 		:return: False if self is a virtual node, True otherwise.
 		"""
 		return self.key is not None
@@ -140,13 +166,17 @@ class AVLNode(object):
 	def is_node_leaf(self) -> bool:
 		"""
 		Checks whether node is a leaf.
+		\n
+		Complexity: O(1).
 		:return: True if a leaf, False otherwise.
 		"""
 		return not self.get_left().is_real_node() and not self.get_right().is_real_node()
 
 	def disconnect_node_from_parent(self):
 		"""
-
+		Disconnects self from it parent.
+		\n
+		Complexity: O(1).
 		"""
 		parent = self.get_parent()
 		self.set_parent(None)
@@ -158,7 +188,9 @@ class AVLNode(object):
 
 	def disconnect_node_from_children(self):
 		"""
-
+		Disconnects self from its children.
+		\n
+		Complexity: O(1).
 		"""
 		if self.get_left().is_real_node():
 			self.get_left().set_parent(None)
@@ -169,7 +201,9 @@ class AVLNode(object):
 
 	def clear_node_from_pointers(self):
 		"""
-
+		Disconnects self from all its parent and children.
+		\n
+		Complexity: O(1).
 		"""
 		self.disconnect_node_from_parent()
 		self.disconnect_node_from_children()
@@ -177,6 +211,8 @@ class AVLNode(object):
 	def get_size(self) -> int:
 		"""
 		returns the size of the node's subtree.
+		\n
+		Complexity: O(1).
 		:return: the size of self's subtree, 0 if the node is virtual.
 		"""
 		return self.size
@@ -184,6 +220,8 @@ class AVLNode(object):
 	def set_size(self, size: int):
 		"""
 		Sets the size of the node.
+		\n
+		Complexity: O(1).
 		:param size: the size of this node.
 		"""
 		self.size = size
@@ -191,6 +229,8 @@ class AVLNode(object):
 	def get_balance_factor(self) -> int:
 		"""
 		returns the balance factor.
+		\n
+		Complexity: O(1).
 		:return: the balance factor of self, 0 if the node is virtual.
 		"""
 		return self.bf
@@ -198,12 +238,16 @@ class AVLNode(object):
 	def set_balance_factor(self):
 		"""
 		sets the balance factor of the node.
+		\n
+		Complexity: O(1).
 		"""
 		self.bf = self.left.get_height() - self.right.get_height()
 
 	def maintain_attributes(self):
 		"""
 		Calculate and update the height, size and the balance factor of node.
+		\n
+		Complexity: O(1).
 		"""
 		self.set_height(1 + max(self.get_left().get_height(), self.get_right().get_height()))
 		self.set_size(1 + self.get_left().get_size() + self.get_right().get_size())
@@ -221,7 +265,6 @@ class AVLTree(object):
 	def __init__(self):
 		"""
 		Constructor, you are allowed to add more fields.
-
 		"""
 		self.root = AVLNode(None, None)
 		self.tree_array = []
@@ -232,12 +275,11 @@ class AVLTree(object):
 			out = out + row + "\n"
 		return out
 
-	# add your fields here
-
 	def search(self, key: int) -> AVLNode | None:
 		"""
 		searches for a AVLNode in the dictionary corresponding to the key.
-		:Complexity: O(log(n)) as seen in class.
+		\n
+		Complexity: O(log(n)) as seen in class.
 		:param key: a key to be searched.
 		:return: the AVLNode corresponding to key or None if key is not found.
 		"""
@@ -256,6 +298,8 @@ class AVLTree(object):
 	def insert(self, key: int, val) -> int:
 		"""
 		inserts val at position i in the dictionary
+		\n
+		Complexity: O(log(n)) since it uses tree_position() and balance() afterward.
 		:param key: key of item that is to be inserted to self, @pre currently does not appear in the dictionary.
 		:param val: the value of the item
 		:return: the number of rebalancing operation due to AVL rebalancing
@@ -277,6 +321,8 @@ class AVLTree(object):
 	def delete(self, node: AVLNode) -> int:
 		"""
 		deletes node from the dictionary.
+		\n
+		Complexity: O(log(n)) since it uses bst_delete() and balance() afterward.
 		:param node: A real pointer to a node in self.
 		:return: the number of rebalancing operation due to AVL rebalancing
 		"""
@@ -287,7 +333,8 @@ class AVLTree(object):
 
 	def avl_to_array(self) -> list:
 		"""
-		returns an array representing dictionary
+		returns an array representing dictionary. \n
+		Complexity: O(n) since it uses sorted_order().
 		:return: a sorted list according to key of touples (key, value) representing the data structure
 		"""
 		self.tree_array = []
@@ -298,14 +345,16 @@ class AVLTree(object):
 
 	def size(self) -> int:
 		"""
-		returns the number of items in dictionary
+		returns the number of items in dictionary \n
+		Complexity: O(1) as size is maintained as a field in each node.
 		:return: the number of items in dictionary
 		"""
 		return self.root.size
 
 	def split(self, node: AVLNode) -> list:
 		"""
-		splits the dictionary at the i'th index
+		splits the dictionary at the i'th index \n
+		Complexity: O(log(n)) as seen in class.
 		:param node: The intended node in the dictionary according to whom we split, @pre node is in self
 		:return: a list [left, right], where left is an AVLTree representing the keys in the
 		dictionary smaller than node.key, right is an AVLTree representing the keys in the
@@ -355,7 +404,8 @@ class AVLTree(object):
 
 	def join(self, tree2: AVLTree, key: int, val) -> int:
 		"""
-		joins self with key and another AVLTree
+		joins self with key and another AVLTree. \n
+		Complexity: O(log(n)).
 		@pre: all keys in self are smaller than key and all keys in tree2 are larger than key
 		:param tree2: a dictionary to be joined with self
 		:param key: The key separating self with tree2
@@ -393,7 +443,8 @@ class AVLTree(object):
 
 	def get_root(self) -> AVLNode:
 		"""
-		returns the root of the tree representing the dictionary.
+		returns the root of the tree representing the dictionary. \n
+		Complexity: O(1).
 		:return: the root, None if the dictionary is empty.
 		"""
 		return self.root
@@ -402,9 +453,10 @@ class AVLTree(object):
 	@staticmethod
 	def min(node: AVLNode) -> AVLNode:
 		"""
-
-		:param node:
-		:return:
+		Finds the minimum key in the subtree whose root is the node given. \n
+		Complexity: O(log(n)) as seen in class.
+		:param node: The root of the subtree.
+		:return: The minimum key in the subtree.
 		"""
 		while node.get_left().is_real_node():
 			node = node.get_left()
@@ -413,9 +465,10 @@ class AVLTree(object):
 	@staticmethod
 	def successor(node: AVLNode) -> AVLNode:
 		"""
-
-		:param node:
-		:return:
+		Finds the successor of the given node. \n
+		Complexity: O(log(n)) as seen in class.
+		:param node: The node we wish to find its successor.
+		:return: The successor
 		"""
 		if node.get_right().is_real_node():
 			return AVLTree.min(node.get_right())
@@ -427,7 +480,8 @@ class AVLTree(object):
 
 	def sorted_order(self, node: AVLNode):
 		"""
-		Performs an in-order scan of the tree.
+		Performs an in-order scan of the tree. \n
+		Complexity: O(n) since it goes through all the nodes in the tree.
 		:param node:
 		"""
 		if node.is_real_node():
@@ -440,7 +494,8 @@ class AVLTree(object):
 		This method makes sure the tree is balanced. It goes up the path from the
 		deleted/inserted node's parent to the root and balances the tree.
 		It makes sure each relevant node's attributes are maintained.
-		It returns the number of nodes needed to balance the tree
+		It returns the number of nodes needed to balance the tree. \n
+		Complexity: O(log(n)) since it follows the path from the node to the root.
 		:param pointer: The parent of the inserted/ deleted node.
 		:return: Number of balancing operations needed to balance the tree.
 		"""
@@ -465,7 +520,8 @@ class AVLTree(object):
 
 	def perform_balance_rotations(self, pointer: AVLNode) -> int:
 		"""
-		Performs the rotations needed to balance the tree.
+		Performs the rotations needed to balance the tree. \n
+		Complexity: O(1).
 		:param pointer: The root of the current subtree we want to balance.
 		:return: Number of rotations needed to balance the tree.
 		"""
@@ -499,7 +555,8 @@ class AVLTree(object):
 
 	def rotate_right(self, prev_top: AVLNode, new_top: AVLNode):
 		"""
-		Performs a right rotation.
+		Performs a right rotation. \n
+		Complexity: O(1).
 		:param prev_top: The Parent of new_top, rotated to become right child of new_top.
 		:param new_top: The left child of prev_top, rotated to become parent of prev_top.
 		"""
@@ -520,7 +577,8 @@ class AVLTree(object):
 
 	def rotate_left(self, prev_top: AVLNode, new_top: AVLNode):
 		"""
-		Performs a left rotation.
+		Performs a left rotation. \n
+		Complexity: O(1).
 		:param prev_top: The Parent of new_top, rotated to become left child of new_top.
 		:param new_top: The right child of prev_top, rotated to become parent of prev_top.
 		"""
@@ -541,7 +599,8 @@ class AVLTree(object):
 
 	def set_top_parent_post_rotation(self, post_rotate_new_top: AVLNode):
 		"""
-		Figures out whether the post rotation new top node is left or right child of previous top parent and sets it.
+		Figures out whether the post rotation new top node is left or right child of previous top parent and sets it. \n
+		Complexity: O(1).
 		:param post_rotate_new_top: the node at the top of the subtree post rotation.
 		"""
 		prev_top_parent = post_rotate_new_top.get_parent()
@@ -554,7 +613,8 @@ class AVLTree(object):
 	"---------------------Insert Helper Methods---------------------"
 	def tree_position(self, new_node_key):
 		"""
-		Finds insertion position of a node with a given key new_node_key.
+		Finds insertion position of a node with a given key new_node_key. \n
+		Complexity: O(log(n)) as seen in class.
 		:param new_node_key: The key of the node we want to insert
 		:return: Position of the future parent of the new node.
 		"""
@@ -571,7 +631,8 @@ class AVLTree(object):
 	"---------------------Delete Helper Methods---------------------"
 	def bst_delete(self, node: AVLNode) -> AVLNode:
 		"""
-		Performs a delete operation on a node in a Binary Search tree and returns the parent of the physically deleted node.
+		Performs a delete operation on a node in a Binary Search tree and returns the parent of the physically deleted node. \n
+		Complexity: O(log(n)) as seen in class.
 		:param node: The node we want to delete.
 		:return: Parent of the physically deleted node.
 		"""
@@ -593,7 +654,8 @@ class AVLTree(object):
 
 	def bst_delete_has_one_child(self, node: AVLNode):
 		"""
-		Performs a delete operation on a node that has a single child.
+		Performs a delete operation on a node that has a single child. \n
+		Complexity: O(1).
 		:param node: The node we want to delete.
 		"""
 		parent = node.get_parent()
@@ -623,6 +685,11 @@ class AVLTree(object):
 		node.set_right(AVLNode(None, None))
 
 	def bst_delete_has_twins(self, node: AVLNode) -> AVLNode:
+		"""
+		Performs a delete operation on a node that has 2 children. \n
+		Complexity: O(log(n)) since it uses successor(node).
+		:param node: The node we want to delete.
+		"""
 		# Find node successor
 		node_succ = AVLTree.successor(node)
 		# His parent is the parent of the physically deleted node.
