@@ -360,6 +360,11 @@ class AVLTree(object):
 		dictionary smaller than node.key, right is an AVLTree representing the keys in the
 		dictionary larger than node.key.
 		"""
+		# Used for theoretical test
+		max_join_cost = 0
+		sum_join_cost = 0
+		count_of_joins = 0
+
 		# First we collect the nodes that will be used to build each tree
 		left_tree_nodes: list[AVLNode] = []
 		right_tree_nodes: list[AVLNode] = []
@@ -388,8 +393,13 @@ class AVLTree(object):
 			sub_tree_left = AVLTree()
 			sub_tree_left.root = small_tree_node.get_left()
 			small_tree_node.get_left().disconnect_node_from_parent()
-			sub_tree_left.join(tree2=left_tree, key=small_tree_node.get_key(),
+			# Line bellow edited for testing-----------------------
+			join_cost = sub_tree_left.join(tree2=left_tree, key=small_tree_node.get_key(),
 							   val=small_tree_node.get_value())
+			# sum_join_cost += join_cost
+			# count_of_joins += 1
+			# max_join_cost = max(max_join_cost, join_cost)
+			# ----------------------------------------------------
 			left_tree = sub_tree_left
 
 		# Create the rest of T2
@@ -397,9 +407,17 @@ class AVLTree(object):
 			sub_tree_right = AVLTree()
 			sub_tree_right.root = big_tree_node.get_right()
 			big_tree_node.get_right().disconnect_node_from_parent()
-			right_tree.join(tree2=sub_tree_right, key=big_tree_node.get_key(),
+			# Lines bellow edited for testing---------------------
+			join_cost = right_tree.join(tree2=sub_tree_right, key=big_tree_node.get_key(),
 							val=big_tree_node.get_value())
+		# 	sum_join_cost += join_cost
+		# 	count_of_joins += 1
+		# 	max_join_cost = max(max_join_cost, join_cost)
+		# test_costs = [(sum_join_cost / count_of_joins), max_join_cost]
+		# -----------------------------------------------------------
 		trees_list: list[AVLTree] = [left_tree, right_tree]
+		# edited return
+		# return [trees_list, test_costs]
 		return trees_list
 
 	def join(self, tree2: AVLTree, key: int, val) -> int:
@@ -460,6 +478,18 @@ class AVLTree(object):
 		"""
 		while node.get_left().is_real_node():
 			node = node.get_left()
+		return node
+
+	@staticmethod
+	def max(node: AVLNode) -> AVLNode:
+		"""
+		Finds the maximum key in the subtree whose root is the node given. \n
+		Complexity: O(log(n)) as seen in class.
+		:param node: The root of the subtree.
+		:return: The maximum key in the subtree.
+		"""
+		while node.get_right().is_real_node():
+			node = node.get_right()
 		return node
 
 	@staticmethod
