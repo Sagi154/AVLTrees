@@ -302,7 +302,7 @@ class AVLTree(object):
 		Complexity: O(log(n)) since it uses tree_position() and balance() afterward.
 		:param key: key of item that is to be inserted to self, @pre currently does not appear in the dictionary.
 		:param val: the value of the item
-		:return: the number of rebalancing operation due to AVL rebalancing
+		:return: the number of rebalancing operations due to AVL rebalancing
 		"""
 		new_node = AVLNode(key, val)
 		if self.get_root() is None or not self.get_root().is_real_node():
@@ -641,7 +641,7 @@ class AVLTree(object):
 				prev_top_parent.set_left(post_rotate_new_top)
 
 	"---------------------Insert Helper Methods---------------------"
-	def tree_position(self, new_node_key):
+	def tree_position(self, new_node_key: int) -> AVLNode:
 		"""
 		Finds insertion position of a node with a given key new_node_key. \n
 		Complexity: O(log(n)) as seen in class.
@@ -757,7 +757,7 @@ class AVLTree(object):
 
 	"---------------------Join Helper Methods---------------------"
 
-	def choose_order_and_connect(self, smaller_tree_root, middle_node, bigger_tree_root):
+	def choose_order_and_connect(self, smaller_tree_root: AVLNode, middle_node: AVLNode, bigger_tree_root: AVLNode):
 		"""
 		the method receive the trees and the node received in join after checking which of them has bigger keys
 		the method compare the height of the trees and then send the taller tree to a method that find a subtree with
@@ -779,7 +779,7 @@ class AVLTree(object):
 										   (smaller_tree_root,bigger_tree_height, True))
 			self.connect_trees(bigger_tree_root, middle_node, subtree_of_taller_tree_root)
 
-			if subtree_of_taller_tree_root == smaller_tree_root :
+			if subtree_of_taller_tree_root == smaller_tree_root:
 				self.root = middle_node
 			else:
 				self.root = smaller_tree_root
@@ -788,7 +788,7 @@ class AVLTree(object):
 										   (bigger_tree_root, smaller_tree_height, False))
 			self.connect_trees(subtree_of_taller_tree_root, middle_node, smaller_tree_root)
 
-			if subtree_of_taller_tree_root == bigger_tree_root :
+			if subtree_of_taller_tree_root == bigger_tree_root:
 				self.root = middle_node
 			else:
 				self.root = bigger_tree_root
@@ -797,7 +797,7 @@ class AVLTree(object):
 			self.root = middle_node
 		self.balance(middle_node)
 
-	def get_pointer_to_appropriate_subtree_with_specific_height(self, tree_root, requested_height, smaller):
+	def get_pointer_to_appropriate_subtree_with_specific_height(self, tree_root: AVLNode, requested_height: int, smaller: bool) -> AVLNode:
 		# complexity analysis: the method going down to a leaf, by that it does at most log(n) actions, every action cost
 		# O(1) and hence the complexity is O(log(n))
 		"""
@@ -831,7 +831,7 @@ class AVLTree(object):
 
 		return tmp_pointer
 
-	def connect_trees(self, bigger_tree_root: AVLNode, middle_node, smaller_tree_root):
+	def connect_trees(self, bigger_tree_root: AVLNode, middle_node: AVLNode, smaller_tree_root: AVLNode):
 		"""
 		Connects a subtree of the taller tree with the node that received in join and the shorter tree
 		than, the method connects the tree that created by the connection to the rest of the taller tree

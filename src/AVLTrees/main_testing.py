@@ -172,9 +172,35 @@ def test_cases_split():
     ret = tree.split(node)
     logging.warning(f"\n split for {node} \n ret is \n{ret[0]} \n{ret[1]}")
 
+def test_some_case_in_join():
+    tree1 = AVLTree()
+    tree1.insert(10, 0)
+    tree1.insert(7, 0)
+    tree1.insert(12, 0)
+    tree1.insert(6, 0)
+    tree1.insert(8, 0)
+    tree1.insert(11, 0)
+    tree1.insert(5, 0)
+
+    tree2 = AVLTree()
+    tree2.insert(30, 0)
+    tree2.insert(26, 0)
+    tree2.insert(35, 0)
+    tree2.insert(25, 0)
+    tree2.insert(27, 0)
+    tree2.insert(34, 0)
+    tree2.insert(36, 0)
+
+    print(tree1)
+    print(tree2)
+
+    tree1.join(tree2, 15, 0)
+    print(tree1)
+
 def main():
     set_log_config()
-    test_cases_split()
+    test_some_case_in_join()
+    #test_cases_split()
     # perform_test()
     # tree, tree1 = random_test(100)
     # test_join()
