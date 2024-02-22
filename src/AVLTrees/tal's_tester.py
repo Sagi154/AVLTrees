@@ -12,16 +12,16 @@ from logs_config import set_log_config
 
 BULK_MODE = False
 
-NUM_OF_TESTS = 2000
-NUM_OF_STEPS = 500
+NUM_OF_TESTS = 100000
+NUM_OF_STEPS = 100
 
 MIN_KEY = 0
-MAX_KEY = 520
+MAX_KEY = 500
 
 step_weights = {
-    "insert": (16, 30),
+    "insert": (8, 30),
     "delete": (8, 30),
-    "split": (6, 10),
+    "split": (2, 8),
     "join": (1, 4),
 }
 

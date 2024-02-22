@@ -174,7 +174,7 @@ class AVLNode(object):
 
 	def disconnect_node_from_parent(self):
 		"""
-		Disconnects self from it parent.
+		Disconnects self from its parent.
 		\n
 		Complexity: O(1).
 		"""
@@ -304,7 +304,9 @@ class AVLTree(object):
 		:param val: the value of the item
 		:return: the number of rebalancing operations due to AVL rebalancing
 		"""
+		logging.debug(f"-----------------Start of insert----------------")
 		new_node = AVLNode(key, val)
+		logging.debug(f"\nInserting node: {new_node} \n into tree: \n {self}")
 		if self.get_root() is None or not self.get_root().is_real_node():
 			self.root = new_node
 			new_node.maintain_attributes()
@@ -316,7 +318,11 @@ class AVLTree(object):
 		else:
 			node_parent.set_left(new_node)
 		new_node.maintain_attributes()
-		return self.balance(node_parent)
+		ret = self.balance(node_parent)
+		logging.debug(f" \nBalancing operations count is: {ret}")
+		logging.debug(f"-----------------End of insert----------------")
+
+		return ret
 
 	def delete(self, node: AVLNode) -> int:
 		"""
@@ -327,9 +333,14 @@ class AVLTree(object):
 		:return: the number of rebalancing operation due to AVL rebalancing
 		"""
 		# First we perform a delete operation as in a BST.
+		logging.debug(f"-----------------Start of delete----------------")
+		logging.debug(f" \n Deleting node: {node} \n from tree: \n {self}")
 		node_parent = self.bst_delete(node)
 		# Then we balance the tree.
-		return self.balance(node_parent)
+		ret = self.balance(node_parent)
+		logging.debug(f" \nBalancing operations count is: {ret}")
+		logging.debug(f"-----------------End of delete----------------")
+		return ret
 
 	def avl_to_array(self) -> list:
 		"""
@@ -364,7 +375,7 @@ class AVLTree(object):
 		max_join_cost = 0
 		sum_join_cost = 0
 		count_of_joins = 0
-
+		logging.debug(f"-----------------Start of split----------------")
 		# First we collect the nodes that will be used to build each tree
 		left_tree_nodes: list[AVLNode] = []
 		right_tree_nodes: list[AVLNode] = []
@@ -418,6 +429,7 @@ class AVLTree(object):
 		trees_list: list[AVLTree] = [left_tree, right_tree]
 		# edited return
 		# return [trees_list, test_costs]
+		logging.debug(f"-----------------End of split----------------")
 		return trees_list
 
 	def join(self, tree2: AVLTree, key: int, val) -> int:
@@ -431,18 +443,23 @@ class AVLTree(object):
 		:return: the absolute value of the difference between the height of the AVL trees joined
 		"""
 		# checking special cases (one or both trees are None)
+		logging.debug(f"-----------------Start of join----------------")
+		logging.debug(f"\n Called for join on self: \n {self} \n tree2:\n{tree2} \n and node: {key}")
 		if (tree2.get_root() is None) or (not tree2.get_root().is_real_node()):
 			if (self.get_root() is None) or (not self.get_root().is_real_node()):
 				new_root = AVLNode(key, val)
 				self.root = new_root
+				logging.debug(f"-----------------End of join----------------")
 				return 1
 			else:
 				self.insert(key=key, val=val)
+				logging.debug(f"-----------------End of join----------------")
 				return 1 + self.get_root().get_height()
 		elif (self.get_root() is None) or (not self.get_root().is_real_node()):
 			prev_tree2_height = tree2.get_root().get_height()
 			tree2.insert(key=key, val=val)
 			self.root = tree2.get_root()
+			logging.debug(f"-----------------End of join----------------")
 			return 1 + prev_tree2_height
 
 		# both trees have root
@@ -457,6 +474,7 @@ class AVLTree(object):
 				self.choose_order_and_connect(tree2.get_root(), middle_node, self.get_root())
 			else:
 				self.choose_order_and_connect(self.get_root(), middle_node, tree2.get_root())
+			logging.debug(f"-----------------End of join----------------")
 			return 1 + abs(heights_difference)
 
 	def get_root(self) -> AVLNode:
