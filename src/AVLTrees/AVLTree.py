@@ -1,8 +1,8 @@
 # username - complete info
 # id1      - 207190406
 # name1    - Sagi Eisenberg
-# id2      - complete info
-# name2    - complete info
+# id2      - 318674355
+# name2    - Ido Zacharia
 
 from __future__ import annotations
 import logging
@@ -435,8 +435,8 @@ class AVLTree(object):
 				logging.debug(f"-----------------End of join----------------")
 				return 1
 			else:
+				ret = 2 + self.get_root().get_height()
 				self.insert(key=key, val=val)
-				ret = 1 + self.get_root().get_height()
 				logging.debug(f"\n Cost of join is {ret}")
 				logging.debug(f"-----------------End of join----------------")
 				return ret
@@ -444,7 +444,7 @@ class AVLTree(object):
 			prev_tree2_height = tree2.get_root().get_height()
 			tree2.insert(key=key, val=val)
 			self.root = tree2.get_root()
-			ret = 1 + prev_tree2_height
+			ret = 2 + prev_tree2_height
 			logging.debug(f"\n Cost of join is {ret}")
 			logging.debug(f"-----------------End of join----------------")
 			return ret
