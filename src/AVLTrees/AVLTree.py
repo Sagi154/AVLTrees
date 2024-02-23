@@ -1,13 +1,11 @@
-# username - complete info
+# username - sagihe
 # id1      - 207190406
 # name1    - Sagi Eisenberg
 # id2      - 318674355
 # name2    - Ido Zacharia
 
 from __future__ import annotations
-import logging
 import math
-from printree import *
 
 
 class AVLNode(object):
@@ -43,7 +41,7 @@ class AVLNode(object):
 			The balance factor of this node.
 			"""
 
-	def get_left(self) -> AVLNode | None:
+	def get_left(self) -> 'AVLNode' | None:
 		"""
 		returns the left child.
 		\n
@@ -252,9 +250,6 @@ class AVLNode(object):
 		self.set_size(1 + self.get_left().get_size() + self.get_right().get_size())
 		self.set_balance_factor()
 
-	def __repr__(self):
-		return f"({str(self.key)} : {str(self.value)} : bf - {self.bf} : height - {self.height} : size - {self.size})"
-
 
 class AVLTree(object):
 	"""
@@ -267,12 +262,6 @@ class AVLTree(object):
 		"""
 		self.root = AVLNode(None, None)
 		self.tree_array = []
-
-	def __repr__(self):
-		out = ""
-		for row in printree(self.root):  # need printree.py file
-			out = out + row + "\n"
-		return out
 
 	def search(self, key: int) -> AVLNode | None:
 		"""
@@ -303,14 +292,10 @@ class AVLTree(object):
 		:param val: the value of the item
 		:return: the number of rebalancing operations due to AVL rebalancing
 		"""
-		logging.debug(f"-----------------Start of insert----------------")
 		new_node = AVLNode(key, val)
-		logging.debug(f"\nInserting node: {new_node} \n into tree: \n {self}")
 		if self.get_root() is None or not self.get_root().is_real_node():
 			self.root = new_node
 			new_node.maintain_attributes()
-			logging.debug(f" \nBalancing operations count is 0")
-			logging.debug(f"-----------------End of insert----------------")
 			return 0
 		node_parent = self.tree_position(new_node.get_key())
 		new_node.set_parent(node_parent)
@@ -319,7 +304,6 @@ class AVLTree(object):
 		else:
 			node_parent.set_left(new_node)
 		new_node.maintain_attributes()
-		logging.debug(f"-----------------End of insert----------------")
 
 		return self.balance(node_parent)
 
@@ -332,11 +316,8 @@ class AVLTree(object):
 		:return: the number of rebalancing operation due to AVL rebalancing
 		"""
 		# First we perform a delete operation as in a BST.
-		logging.debug(f"-----------------Start of delete----------------")
-		logging.debug(f" \n Deleting node: {node} \n from tree: \n {self}")
 		node_parent = self.bst_delete(node)
 		# Then we balance the tree.
-		logging.debug(f"-----------------End of delete----------------")
 		return self.balance(node_parent)
 
 	def avl_to_array(self) -> list:
@@ -357,7 +338,7 @@ class AVLTree(object):
 		Complexity: O(1) as size is maintained as a field in each node.
 		:return: the number of items in dictionary
 		"""
-		return self.root.size
+		return self.root.get_size()
 
 	def split(self, node: AVLNode) -> list:
 		"""
@@ -368,8 +349,6 @@ class AVLTree(object):
 		dictionary smaller than node.key, right is an AVLTree representing the keys in the
 		dictionary larger than node.key.
 		"""
-		logging.debug(f"-----------------Start of split----------------")
-		logging.debug(f"\n About to split tree \n {self} \n on node: {node}")
 		# First we collect the nodes that will be used to build each tree
 		left_tree_nodes: list[AVLNode] = []
 		right_tree_nodes: list[AVLNode] = []
@@ -410,8 +389,6 @@ class AVLTree(object):
 			join_cost = right_tree.join(tree2=sub_tree_right, key=big_tree_node.get_key(),
 							val=big_tree_node.get_value())
 		trees_list: list[AVLTree] = [left_tree, right_tree]
-		logging.debug(f"\n Trees from split are:\n left: \n {trees_list[0]}\n right: \n {trees_list[1]}")
-		logging.debug(f"-----------------End of split----------------")
 		return trees_list
 
 	def join(self, tree2: AVLTree, key: int, val) -> int:
@@ -425,29 +402,22 @@ class AVLTree(object):
 		:return: the absolute value of the difference between the height of the AVL trees joined
 		"""
 		# checking special cases (one or both trees are None)
-		logging.debug(f"-----------------Start of join----------------")
-		logging.debug(f"\n Called for join on self: \n {self} \n tree2:\n{tree2} \n and node: {key}")
 		if (tree2.get_root() is None) or (not tree2.get_root().is_real_node()):
 			if (self.get_root() is None) or (not self.get_root().is_real_node()):
 				new_root = AVLNode(key, val)
 				self.root = new_root
-				logging.debug(f"\n Cost of join is 1")
-				logging.debug(f"-----------------End of join----------------")
 				return 1
 			else:
-				ret = 2 + self.get_root().get_height()
+				prev_self_height = self.get_root().get_height()
+				# Calculates 1 + |self.height - tree2.height|
 				self.insert(key=key, val=val)
-				logging.debug(f"\n Cost of join is {ret}")
-				logging.debug(f"-----------------End of join----------------")
-				return ret
+				return 2 + prev_self_height
 		elif (self.get_root() is None) or (not self.get_root().is_real_node()):
 			prev_tree2_height = tree2.get_root().get_height()
 			tree2.insert(key=key, val=val)
 			self.root = tree2.get_root()
-			ret = 2 + prev_tree2_height
-			logging.debug(f"\n Cost of join is {ret}")
-			logging.debug(f"-----------------End of join----------------")
-			return ret
+			# Calculates 1 + |self.height - tree2.height|
+			return 2 + prev_tree2_height
 
 		# both trees have root
 		else:
@@ -462,8 +432,6 @@ class AVLTree(object):
 			else:
 				self.choose_order_and_connect(self.get_root(), middle_node, tree2.get_root())
 			ret = 1 + abs(heights_difference)
-			logging.debug(f"\n Cost of join is {ret}")
-			logging.debug(f"-----------------End of join----------------")
 			return ret
 
 	def get_root(self) -> AVLNode:
@@ -536,7 +504,6 @@ class AVLTree(object):
 		:param pointer: The parent of the inserted/ deleted node.
 		:return: Number of balancing operations needed to balance the tree.
 		"""
-		logging.debug(f"\n Tree before balance looks like: \n {self}")
 		balance_ops = 0
 		while pointer is not None:
 			prev_pointer_height = pointer.get_height()
@@ -546,14 +513,10 @@ class AVLTree(object):
 			if abs(bf) < 2 and prev_pointer_height == pointer.get_height():
 				pass
 			elif abs(bf) < 2 and prev_pointer_height != pointer.get_height():
-				logging.debug(f"\n Height changed for pointer: {pointer}, prev_height: {prev_pointer_height}")
 				balance_ops += 1
 			elif abs(bf) == 2:
-				logging.debug(f"\n About to perform rotations for pointer {pointer}")
 				balance_ops += self.perform_balance_rotations(pointer)
 			pointer = next_pointer
-		logging.debug(f"\n Tree after balance looks like: \n {self}")
-		logging.debug(f" \nBalancing operations count is: {balance_ops}")
 		return balance_ops
 
 	"---------------------Balance Helper Methods---------------------"
@@ -571,11 +534,9 @@ class AVLTree(object):
 			right_child = pointer.get_right()
 			if right_child.get_balance_factor() == 1:
 				self.rotate_right(prev_top=right_child, new_top=right_child.get_left())
-				logging.debug(f"\n Performing right rotation of prev_top:{right_child} and new_top:{right_child.get_left()}")
 				rotations = 2
 				right_child = pointer.get_right()
 			self.rotate_left(prev_top=pointer, new_top=right_child)
-			logging.debug(f"\n Performing left rotation of prev_top:{pointer} and new_top:{right_child}")
 
 			if self.root == pointer:
 				self.root = right_child
@@ -583,11 +544,9 @@ class AVLTree(object):
 			left_child = pointer.get_left()
 			if left_child.get_balance_factor() == -1:
 				self.rotate_left(prev_top=left_child, new_top=left_child.get_right())
-				logging.debug(f"\n Performing left rotation of prev_top:{left_child} and new_top:{left_child.get_right()}")
 				rotations = 2
 				left_child = pointer.get_left()
 			self.rotate_right(prev_top=pointer, new_top=left_child)
-			logging.debug(f"\n Performing right rotation of prev_top:{pointer} and new_top:{left_child}")
 
 			if self.root == pointer:
 				self.root = left_child

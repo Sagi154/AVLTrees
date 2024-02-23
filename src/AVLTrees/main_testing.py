@@ -202,11 +202,15 @@ def test_some_case_in_join():
 def test_another_case_of_join():
     tree1 = AVLTree()
     tree2 = AVLTree()
-    tree1.insert(20, 0)
+    tree2.insert(20, 0)
+    tree2.insert(10, 0)
+    tree2.insert(15, 0)
+    tree2.insert(5, 0)
     logging.debug(f"\n {tree1}")
     logging.debug(f"\n {tree2}")
-    tree2.join(tree1, 25, 0)
+    cost = tree1.join(tree2, 3, 0)
     logging.debug(f"\n {tree2}")
+    logging.debug(f"cost of join is {cost}")
 
 
 
