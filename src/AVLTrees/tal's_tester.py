@@ -12,17 +12,17 @@ from logs_config import set_log_config
 
 BULK_MODE = False
 
-NUM_OF_TESTS = 2
-NUM_OF_STEPS = 100
+NUM_OF_TESTS = 2000
+NUM_OF_STEPS = 1000
 
 MIN_KEY = 0
-MAX_KEY = 120
+MAX_KEY = 1200
 
 step_weights = {
     "insert": (8, 30),
-    "delete": (2, 8),
-    "split": (0, 0),
-    "join": (0, 0),
+    "delete": (8, 30),
+    "split": (2, 4),
+    "join": (1, 3),
 }
 
 RESULT_FILE_PATH = Path.home() / "avl_tester_results.json"

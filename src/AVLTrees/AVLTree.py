@@ -4,7 +4,6 @@
 # id2      - 318674355
 # name2    - Ido Zacharia
 
-from __future__ import annotations
 import math
 
 
@@ -41,7 +40,7 @@ class AVLNode(object):
 			The balance factor of this node.
 			"""
 
-	def get_left(self) -> 'AVLNode' | None:
+	def get_left(self):
 		"""
 		returns the left child.
 		\n
@@ -50,7 +49,7 @@ class AVLNode(object):
 		"""
 		return self.left
 
-	def get_right(self) -> AVLNode | None:
+	def get_right(self):
 		"""
 		returns the right child.
 		\n
@@ -59,7 +58,7 @@ class AVLNode(object):
 		"""
 		return self.right
 
-	def get_parent(self) -> AVLNode | None:
+	def get_parent(self):
 		"""
 		returns the parent.
 		\n
@@ -95,30 +94,30 @@ class AVLNode(object):
 		"""
 		return self.height
 
-	def set_left(self, node: AVLNode | None):
+	def set_left(self, node):
 		"""
 		sets left child.
 		\n
 		Complexity: O(1).
-		:param node: a node.
+		:param node: AVLNode | None
 		"""
 		self.left = node
 
-	def set_right(self, node: AVLNode | None):
+	def set_right(self, node):
 		"""
 		sets right child.
 		\n
 		Complexity: O(1).
-		:param node: a node.
+		:param node: AVLNode | None
 		"""
 		self.right = node
 
-	def set_parent(self, node: AVLNode | None):
+	def set_parent(self, node):
 		"""
 		sets parent.
 		\n
 		Complexity: O(1).
-		:param node: a node.
+		:param node: AVLNode | None
 		"""
 		self.parent = node
 
@@ -391,10 +390,11 @@ class AVLTree(object):
 		trees_list: list[AVLTree] = [left_tree, right_tree]
 		return trees_list
 
-	def join(self, tree2: AVLTree, key: int, val) -> int:
+	def join(self, tree2, key: int, val) -> int:
 		"""
 		joins self with key and another AVLTree. \n
 		Complexity: O(log(n)).
+		\n
 		@pre: all keys in self are smaller than key and all keys in tree2 are larger than key
 		:param tree2: a dictionary to be joined with self
 		:param key: The key separating self with tree2
